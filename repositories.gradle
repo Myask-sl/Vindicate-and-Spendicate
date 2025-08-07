@@ -2,4 +2,7 @@
 
 repositories {
 
+    maven {
+        url = "https://api.modrinth.com/maven"
+    }
 }
