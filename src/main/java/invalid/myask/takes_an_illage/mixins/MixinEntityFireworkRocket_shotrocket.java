@@ -1,5 +1,6 @@
 package invalid.myask.takes_an_illage.mixins;
 
+import invalid.myask.takes_an_illage.api.CrossbowHelper;
 import invalid.myask.takes_an_illage.api.IBlowUp;
 import invalid.myask.takes_an_illage.entities.ProjectileFireworkRocket;
 import net.minecraft.entity.Entity;
@@ -10,12 +11,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.List;
 
 @Mixin(EntityFireworkRocket.class)
 public abstract class MixinEntityFireworkRocket_shotrocket extends Entity implements IBlowUp {
@@ -45,11 +49,15 @@ public abstract class MixinEntityFireworkRocket_shotrocket extends Entity implem
                 if (fireworksnbt.hasKey("Explosions")) {
                     int explosions = fireworksnbt.getTagList("Explosions", 10).tagCount(),
                         damageMax = 5 + 2 * explosions;
-                    hits = worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox(
+                    List<Entity> hits = worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox(
                         posX - 5, posY  -5, posZ - 5, posX + 5, posY + 5, posZ + 5));
                     for (Entity e : hits) {
                         if (e instanceof EntityLivingBase elb) {
                             double d = this.getDistanceToEntity(elb);
+                            MovingObjectPosition movingObjectPosition = worldObj.rayTraceBlocks(
+                                CrossbowHelper.entityPosAsVec(this), CrossbowHelper.entityPosAsVec(elb),
+                                true); // liquids protect too
+                            if (movingObjectPosition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) continue;
                             if (((Entity) this) instanceof ProjectileFireworkRocket pfr)
                                 elb.attackEntityFrom(
                                     new EntityDamageSourceIndirect("shotfireworks",

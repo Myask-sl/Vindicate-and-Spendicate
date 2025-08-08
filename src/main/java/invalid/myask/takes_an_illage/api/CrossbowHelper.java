@@ -192,4 +192,8 @@ public class CrossbowHelper {
             }
         }
     }
+
+    public static Vec3 entityPosAsVec(Entity e) {
+        return Vec3.createVectorHelper(e.posX, e.posY, e.posZ);
+    }
 }
