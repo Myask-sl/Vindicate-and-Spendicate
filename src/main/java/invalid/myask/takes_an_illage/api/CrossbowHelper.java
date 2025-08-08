@@ -21,6 +21,7 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
@@ -164,7 +165,7 @@ public class CrossbowHelper {
 
     public static void applyCrossbowEnchantsToShot(Entity shot, ItemStack launcher, World world, EntityLivingBase user) {
         if (shot instanceof IPierceArrow modArrow) modArrow
-            .takesAnIllage$setPierce(EnchantmentHelper.getEnchantmentLevel(Config.enchid_piercing, launcher));
+            .takesAnIllage$setPierces(EnchantmentHelper.getEnchantmentLevel(Config.enchid_piercing, launcher));
         CrossbowHelper.multiShoot(shot, launcher, world, user);
     }
 
@@ -197,5 +198,17 @@ public class CrossbowHelper {
 
     public static Vec3 entityPosAsVec(Entity e) {
         return Vec3.createVectorHelper(e.posX, e.posY, e.posZ);
+    }
+
+    public static void undoBounce(Entity shot, MovingObjectPosition movingObjectPosition) {
+        if (movingObjectPosition.typeOfHit != MovingObjectPosition.MovingObjectType.ENTITY
+            || movingObjectPosition.entityHit.hurtResistantTime <= 0
+            || ((IPierceArrow)shot).takes_an_illage$getInitialPierces() == 0) return;
+        //undo bounce if this [was] piercing and is going through an entity that something [presumably this] hurt
+        shot.motionX /= -0.10000000149011612D;
+        shot.motionY /= -0.10000000149011612D;
+        shot.motionZ /= -0.10000000149011612D;
+        shot.prevRotationYaw -= 180;
+        shot.rotationYaw -= 180;
     }
 }

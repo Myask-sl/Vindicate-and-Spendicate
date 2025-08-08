@@ -17,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 
+import invalid.myask.takes_an_illage.api.CrossbowHelper;
 import invalid.myask.takes_an_illage.api.IPierceArrow;
 
 @Mixin(EntityArrow.class)
@@ -51,39 +52,36 @@ public abstract class MixinEntityArrow_pierce extends Entity implements IPierceA
     }
 
     @Inject(method = "onUpdate",
-    at = @At(value = "FIELD", target = "Lnet/minecraft/entity/projectile/EntityArrow;ticksInAir:I", opcode = Opcodes.PUTFIELD, ordinal = 2))
+    at = @At(value = "FIELD", target = "Lnet/minecraft/entity/projectile/EntityArrow;ticksInAir:I", opcode = Opcodes.PUTFIELD, ordinal = 2, shift = At.Shift.AFTER))
     private void dontBounce(CallbackInfo ci, @Local MovingObjectPosition movingObjectPosition) {
-        if (movingObjectPosition.typeOfHit != MovingObjectPosition.MovingObjectType.ENTITY
-            || movingObjectPosition.entityHit.hurtResistantTime <= 0
-            || takes_an_illage$initialPierces == 0) return;
-        //undo bounce if this [was] piercing and is going through an entity that something [presumably this] hurt
-        this.motionX /= -0.10000000149011612D;
-        this.motionY /= -0.10000000149011612D;
-        this.motionZ /= -0.10000000149011612D;
-        this.prevRotationYaw -= 180;
-        this.rotationYaw -= 180;
+        CrossbowHelper.undoBounce(this, movingObjectPosition);
+
     }
 
     @Inject(method = "writeEntityToNBT", at = @At("TAIL"))
     private void writeMoreNBT(NBTTagCompound tagCompound, CallbackInfo ci) {
-        if (takes_an_illage$piercesRemaining > 0) tagCompound.setInteger("pierces", takesAnIllage$getPierce());
+        if (takes_an_illage$piercesRemaining > 0) tagCompound.setInteger("pierces", takesAnIllage$getPierces());
         if (takes_an_illage$initialPierces > 0) tagCompound.setInteger("init_pierces", takes_an_illage$initialPierces);
     }
 
     @Inject(method = "readEntityFromNBT", at = @At("TAIL"))
     private void readMoreNBT(NBTTagCompound tagCompound, CallbackInfo ci) {
-        takesAnIllage$setPierce(tagCompound.getInteger("pierces"));
+        takesAnIllage$setPierces(tagCompound.getInteger("pierces"));
         takes_an_illage$initialPierces = tagCompound.getInteger("init_pierces");
     }
 
     @Override
-    public void takesAnIllage$setPierce(int number) {
+    public void takesAnIllage$setPierces(int number) {
         takes_an_illage$piercesRemaining = Math.max(number, 0);
         takes_an_illage$initialPierces = takes_an_illage$piercesRemaining;
     }
 
     @Override
-    public int takesAnIllage$getPierce() {
+    public int takesAnIllage$getPierces() {
         return takes_an_illage$piercesRemaining;
+    }
+
+    public int takes_an_illage$getInitialPierces() {
+        return takes_an_illage$initialPierces;
     }
 }
