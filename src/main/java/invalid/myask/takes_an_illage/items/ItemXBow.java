@@ -30,22 +30,6 @@ public class ItemXBow extends Item {
     }
 
     @Override
-    public boolean requiresMultipleRenderPasses() {
-        return true;
-    }
-
-    @Override
-    public int getRenderPasses(int metadata) {
-        return 2;
-    }
-
-    @Override
-    public IIcon getIcon(ItemStack stack, int pass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
-        return pass == 1 ? CrossbowHelper.getLoadIcon(stack)
-            : percentPulled(stack, player, usingItem == stack, useRemaining) >= 100 ? iconCocked : itemIcon;
-    }
-
-    @Override
     public void onUsingTick(ItemStack stack, EntityPlayer user, int count) {
         if (getMaxItemUseDuration(stack) - count == pullTime(stack)) {
             int slot = CrossbowHelper.findProjectile(user.inventory);
@@ -124,6 +108,13 @@ public class ItemXBow extends Item {
         return -1;
     }
 
+
+    @Override
+    public IIcon getIcon(ItemStack stack, int pass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
+        return getLoad(stack) >= 0 ? CrossbowHelper.getLoadIcon(stack)
+            : percentPulled(stack, player, usingItem == stack, useRemaining) >= 80 ? iconCocked : itemIcon;
+    }
+
     @Override
     public void registerIcons(IIconRegister register) {
         super.registerIcons(register);
@@ -132,7 +123,7 @@ public class ItemXBow extends Item {
             iconArrow = register.registerIcon(TakesAnIllage.MODID + ":crossbow_arrow");
             iconSpectralArrow = register.registerIcon(TakesAnIllage.MODID + ":crossbow_spectral_arrow");
             iconTippedArrow = register.registerIcon(TakesAnIllage.MODID + ":crossbow_tipped_arrow");
-            iconRocket = register.registerIcon(TakesAnIllage.MODID + ":crossbow_rocket");
+            iconRocket = register.registerIcon(TakesAnIllage.MODID + ":crossbow_fireworks");
             iconBlank = register.registerIcon(TakesAnIllage.MODID + ":blank");
         }
     }
