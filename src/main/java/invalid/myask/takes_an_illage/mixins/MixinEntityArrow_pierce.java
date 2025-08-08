@@ -1,6 +1,8 @@
 package invalid.myask.takes_an_illage.mixins;
 
 import com.llamalad7.mixinextras.sugar.Local;
+import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityArrow;
@@ -21,7 +23,7 @@ import invalid.myask.takes_an_illage.api.CrossbowHelper;
 import invalid.myask.takes_an_illage.api.IPierceArrow;
 
 @Mixin(EntityArrow.class)
-public abstract class MixinEntityArrow_pierce extends Entity implements IPierceArrow {
+public abstract class MixinEntityArrow_pierce extends Entity implements IPierceArrow, IEntityAdditionalSpawnData {
 
     @Unique
     public int takes_an_illage$initialPierces = 0;
@@ -83,5 +85,17 @@ public abstract class MixinEntityArrow_pierce extends Entity implements IPierceA
 
     public int takes_an_illage$getInitialPierces() {
         return takes_an_illage$initialPierces;
+    }
+
+    @Override
+    public void writeSpawnData(ByteBuf buffer) {
+        buffer.writeInt(takes_an_illage$getInitialPierces());
+        buffer.writeInt(takesAnIllage$getPierces());
+    }
+
+    @Override
+    public void readSpawnData(ByteBuf additionalData) {
+        takes_an_illage$initialPierces = additionalData.readInt();
+        takes_an_illage$piercesRemaining = additionalData.readInt(); //perhaps redundant but I'm annoyed
     }
 }
