@@ -105,11 +105,11 @@ public class CrossbowHelper {
         }
         if (target == null) { // probably player
             switch (result) {
-                case "tipped_arrow" -> {
+                case "tipped_arrow", "etfuturum.tipped_arrow" -> {
                     shot = new EntityTippedArrow(world, user, 2);
                     ((EntityTippedArrow) shot).setArrow(ammo);
                 }
-                case "spectral_arrow" ->
+                case "spectral_arrow", "etfuturum.spectral_arrow" ->
                     shot = new EntityArrow(world, user, 2); //TODO: when spectral arrows exist...replace
                 case "fireworks" -> shot = new ProjectileFireworkRocket(world, user, ammo);
                 default -> shot = new EntityArrow(world, user, 2);
@@ -183,9 +183,12 @@ public class CrossbowHelper {
                 heading = Vec3.createVectorHelper(newShot.motionX, newShot.motionY, newShot.motionZ);
                 heading.rotateAroundY((float) (Config.multishot_spread * yawShots));
                 heading.rotateAroundX((float) (Config.multishot_spread * pitchShots));
+
                 setEntityV(newShot, heading);
+                if (newShot instanceof EntityArrow newArrow) newArrow.shootingEntity =
+                    ((EntityArrow)originalShot).shootingEntity;
                 // TODO: set cluster UUID so they can combine damage
-                world.joinEntityInSurroundings(newShot);
+                if (!world.isRemote) world.spawnEntityInWorld(newShot);
             }
         }
     }

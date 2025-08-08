@@ -61,14 +61,15 @@ public class ItemXBow extends Item {
     public int percentPulled(ItemStack stack, EntityPlayer player, boolean using, int useRemaining) {
         int maxUse = pullTime(stack);
         useRemaining = Math.min(useRemaining, maxUse);
-        return 100 * (int) (getLoad(stack) >= 0 ? 1 : using ? (maxUse - useRemaining) / ((float) maxUse) : 0);
+        int result = 100 * (int) (getLoad(stack) >= 0 ? 1 : using ? (maxUse - useRemaining) / ((float) maxUse) : 0);
+        return result;
     }
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer user) {
         if (getLoad(stack) >= 0 && user.getItemInUseDuration() == 0) { //loaded
             CrossbowHelper.launchProjectile(stack, world, user, null);
-            return stack.attemptDamageItem(1, user.getRNG()) ? null : stack;
+            return (!user.capabilities.isCreativeMode && stack.attemptDamageItem(1, user.getRNG()) ? null : stack);
         }
         else if (user.capabilities.isCreativeMode || CrossbowHelper.findProjectile(user.inventory) >= 0)
         {
@@ -107,7 +108,6 @@ public class ItemXBow extends Item {
         }
         return -1;
     }
-
 
     @Override
     public IIcon getIcon(ItemStack stack, int pass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
