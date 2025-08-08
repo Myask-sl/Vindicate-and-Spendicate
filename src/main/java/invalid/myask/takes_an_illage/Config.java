@@ -5,6 +5,7 @@ import java.io.File;
 import net.minecraftforge.common.config.Configuration;
 
 public class Config {
+
     public static int enchid_quickcharge = 67;
     public static int enchid_multishot = 68;
     public static int enchid_piercing = 69;
@@ -19,13 +20,13 @@ public class Config {
 
     public static boolean craftable_crossbow = true;
     public static boolean crossbow_enchants_enable = true;
-    public static boolean random_crossbow_damage = true; //Javalike
+    public static boolean random_crossbow_damage = true; // Javalike
     public static boolean multishot_y_enable = true;
     public static double multishot_spread = Math.PI / 18;
 
     public static void synchronizeConfiguration(File configFile) {
         Configuration configuration = new Configuration(configFile);
-        //TODO: all configurables
+        // TODO: all configurables
         if (configuration.hasChanged()) {
             configuration.save();
         }

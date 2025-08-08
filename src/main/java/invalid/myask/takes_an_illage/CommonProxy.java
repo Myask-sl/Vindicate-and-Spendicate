@@ -6,10 +6,11 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
-import ganymedes01.etfuturum.ModItems;
-import invalid.myask.takes_an_illage.api.CrossbowHelper;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+
+import ganymedes01.etfuturum.ModItems;
+import invalid.myask.takes_an_illage.api.CrossbowHelper;
 
 public class CommonProxy {
 
@@ -41,9 +42,8 @@ public class CommonProxy {
         CrossbowHelper.registerLoad(Items.fireworks, null);
         if (Loader.isModLoaded("etfuturum")) {
             CrossbowHelper.registerLoad(ModItems.TIPPED_ARROW.get(), null);
-            Item spectral = GameRegistry.findItem("etfuturum","spectral_arrow");
-            if (spectral != null)
-                CrossbowHelper.registerLoad(spectral, null);
+            Item spectral = GameRegistry.findItem("etfuturum", "spectral_arrow");
+            if (spectral != null) CrossbowHelper.registerLoad(spectral, null);
         }
     }
 }

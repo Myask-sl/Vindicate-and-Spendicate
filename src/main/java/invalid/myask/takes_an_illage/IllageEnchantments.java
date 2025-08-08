@@ -5,7 +5,9 @@ import net.minecraft.enchantment.Enchantment;
 import invalid.myask.takes_an_illage.enchantments.*;
 
 public class IllageEnchantments {
+
     public static Enchantment MULTISHOT, MULTISHOT_Y, PIERCING, QUICK_CHARGE;
+
     public static void register() {
         if (Config.crossbow_enchants_enable) {
             MULTISHOT = new EnchantmentMultishot(Config.enchid_multishot, 2);

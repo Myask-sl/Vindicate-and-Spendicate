@@ -1,10 +1,6 @@
 package invalid.myask.takes_an_illage.items;
 
 import cpw.mods.fml.common.Loader;
-import ganymedes01.etfuturum.ModItems;
-import invalid.myask.takes_an_illage.Config;
-import invalid.myask.takes_an_illage.TakesAnIllage;
-import invalid.myask.takes_an_illage.api.CrossbowHelper;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.enchantment.EnchantmentArrowInfinite;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -18,7 +14,13 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import ganymedes01.etfuturum.ModItems;
+import invalid.myask.takes_an_illage.Config;
+import invalid.myask.takes_an_illage.TakesAnIllage;
+import invalid.myask.takes_an_illage.api.CrossbowHelper;
+
 public class ItemXBow extends Item {
+
     public IIcon iconCocked;
     public static IIcon iconArrow, iconSpectralArrow, iconTippedArrow, iconRocket, iconBlank;
 
@@ -40,9 +42,10 @@ public class ItemXBow extends Item {
 
     /**
      * Actually "when use ticks run out"
+     *
      * @param stack before stack
      * @param world world
-     * @param user user
+     * @param user  user
      * @return after stack
      */
     @Override
@@ -52,7 +55,7 @@ public class ItemXBow extends Item {
                 CrossbowHelper.launchProjectile(stack, world, user, null);
                 yield stack.attemptDamageItem(1, user.getRNG()) ? null : stack;
             }
-            /*case -1*/ default -> {
+            /* case -1 */ default -> {
                 int slot = CrossbowHelper.findProjectile(user.inventory);
                 if (slot != -1) {
                     NBTTagCompound nbt = stack.getTagCompound();
@@ -87,7 +90,8 @@ public class ItemXBow extends Item {
 
     @Override
     public int getMaxItemUseDuration(ItemStack stack) {
-        return Config.crossbow_base_charge_ticks - EnchantmentHelper.getEnchantmentLevel(Config.enchid_quickcharge, stack) * Config.ticks_per_quickcharge;
+        return Config.crossbow_base_charge_ticks
+            - EnchantmentHelper.getEnchantmentLevel(Config.enchid_quickcharge, stack) * Config.ticks_per_quickcharge;
     }
 
     protected int getLoad(ItemStack stack) {
@@ -103,7 +107,7 @@ public class ItemXBow extends Item {
                     if (loadItem == Items.fireworks) return 3;
                     if (loadItem != null && Loader.isModLoaded("etfuturum")) {
                         if (loadItem == ModItems.TIPPED_ARROW.get()) return 2;
-                        //if (loadItem == ModItems.SPECTRAL_ARROW.get()) return 1; //uh...not there yet?
+                        // if (loadItem == ModItems.SPECTRAL_ARROW.get()) return 1; //uh...not there yet?
                     }
                 }
             }

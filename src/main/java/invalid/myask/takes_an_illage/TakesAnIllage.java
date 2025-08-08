@@ -10,14 +10,18 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
-@Mod(modid = TakesAnIllage.MODID, version = Tags.VERSION, name = TakesAnIllage.MODNAME, acceptedMinecraftVersions = "["+Tags.MINECRAFT_VERSION+"]")
+@Mod(
+    modid = TakesAnIllage.MODID,
+    version = Tags.VERSION,
+    name = TakesAnIllage.MODNAME,
+    acceptedMinecraftVersions = "[" + Tags.MINECRAFT_VERSION + "]")
 public class TakesAnIllage {
 
     public static final String MODID = Tags.MODID;
     public static final String MODNAME = Tags.MODNAME;
     public static final Logger LOG = LogManager.getLogger(MODID);
 
-    @SidedProxy(clientSide = Tags.MODGROUP+".ClientProxy", serverSide = Tags.MODGROUP+".CommonProxy")
+    @SidedProxy(clientSide = Tags.MODGROUP + ".ClientProxy", serverSide = Tags.MODGROUP + ".CommonProxy")
     public static CommonProxy proxy;
 
     @Mod.EventHandler

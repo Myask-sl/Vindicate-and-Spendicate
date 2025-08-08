@@ -1,10 +1,11 @@
 package invalid.myask.takes_an_illage.api;
 
-import ganymedes01.etfuturum.entities.EntityTippedArrow;
-import invalid.myask.takes_an_illage.Config;
-import invalid.myask.takes_an_illage.compat.BackhandWrapper;
-import invalid.myask.takes_an_illage.entities.ProjectileFireworkRocket;
-import invalid.myask.takes_an_illage.items.ItemXBow;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import javax.annotation.Nullable;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -23,13 +24,14 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import ganymedes01.etfuturum.entities.EntityTippedArrow;
+import invalid.myask.takes_an_illage.Config;
+import invalid.myask.takes_an_illage.compat.BackhandWrapper;
+import invalid.myask.takes_an_illage.entities.ProjectileFireworkRocket;
+import invalid.myask.takes_an_illage.items.ItemXBow;
 
 public class CrossbowHelper {
+
     protected static Set<Item> crossbowLoads = new HashSet<>();
     protected static Map<Item, IIcon> crossbowLoadsIcons = new HashMap<>();
 
@@ -60,12 +62,14 @@ public class CrossbowHelper {
 
     /**
      * Finds suitable crossbow projectile.
+     *
      * @param inventory to search
      * @return slot index of projectile
      */
     public static int findProjectile(IInventory inventory) {
         ItemStack candidate = BackhandWrapper.getOffhand(inventory);
-        if (candidate != null && crossbowLoads.contains(candidate.getItem())) return BackhandWrapper.getOffhandIndex(inventory);
+        if (candidate != null && crossbowLoads.contains(candidate.getItem()))
+            return BackhandWrapper.getOffhandIndex(inventory);
         for (int i = 0; i < inventory.getSizeInventory(); i++) {
             candidate = inventory.getStackInSlot(i);
             if (candidate != null && crossbowLoads.contains(candidate.getItem())) return i;
@@ -75,12 +79,14 @@ public class CrossbowHelper {
 
     /**
      * Launch a projectile.
+     *
      * @param launcher the crossbow
-     * @param world world
-     * @param user user
-     * @param target target (for mobs), leave null to use user-angle for projectile direction
+     * @param world    world
+     * @param user     user
+     * @param target   target (for mobs), leave null to use user-angle for projectile direction
      */
-    public static void launchProjectile(ItemStack launcher, World world, EntityLivingBase user, EntityLivingBase target) {
+    public static void launchProjectile(ItemStack launcher, World world, EntityLivingBase user,
+        EntityLivingBase target) {
         NBTTagCompound nbt = launcher.getTagCompound();
         String result = "arrow";
         Entity shot;
@@ -97,7 +103,7 @@ public class CrossbowHelper {
                 }
             }
         }
-        if (target == null) { //probably player
+        if (target == null) { // probably player
             switch (result) {
                 case "tipped_arrow" -> {
                     shot = new EntityTippedArrow(world, user, 2);
@@ -111,20 +117,22 @@ public class CrossbowHelper {
         } else {
             switch (result) {
                 case "tipped_arrow" -> {
-                    shot = new EntityTippedArrow(world, user, target, 1.6F, (float) (14 - world.difficultySetting.getDifficultyId() * 4));
+                    shot = new EntityTippedArrow(world, user, target, 1.6F,
+                        (float) (14 - world.difficultySetting.getDifficultyId() * 4));
                     ((EntityTippedArrow) shot).setArrow(ammo);
                 }
-                case "spectral_arrow" ->
-                    shot = new EntityArrow(world, user, target, 1.6F, (float) (14 - world.difficultySetting.getDifficultyId() * 4));
-                //TODO: when spectral arrows exist, replace
+                case "spectral_arrow" -> shot = new EntityArrow(world, user, target, 1.6F,
+                    (float) (14 - world.difficultySetting.getDifficultyId() * 4));
+                // TODO: when spectral arrows exist, replace
                 case "fireworks" -> shot = new ProjectileFireworkRocket(world, user, target, ammo);
                 default -> // "arrow".equals
-                    shot = new EntityArrow(world, user, target, 1.6F, (float) (14 - world.difficultySetting.getDifficultyId() * 4));
+                    shot = new EntityArrow(world, user, target, 1.6F,
+                        (float) (14 - world.difficultySetting.getDifficultyId() * 4));
             }
         }
         if (shot instanceof EntityArrow shotArrow) {
-            if (Config.random_crossbow_damage)
-                shotArrow.setDamage(user.getRNG().nextInt(5) + 7);
+            if (Config.random_crossbow_damage) shotArrow.setDamage(
+                user.getRNG().nextInt(5) + 7);
             else shotArrow.setDamage(9);
             if (!(user instanceof EntityPlayer))
                 shotArrow.setDamage(((EntityArrow) shot).getDamage() * .46);
@@ -145,16 +153,16 @@ public class CrossbowHelper {
         originalShot.writeToNBTOptional(nbt);
         Entity newShot;
         Vec3 heading;
-        //TODO: give cluster UUID so they can combine damage
+        // TODO: give cluster UUID so they can combine damage
         for (int yawShots = -multishotX; yawShots <= multishotX; yawShots++) {
             for (int pitchShots = -multishotY; pitchShots <= multishotY; pitchShots++) {
-                if (yawShots == 0 && pitchShots == 0) continue; //don't dupe original
+                if (yawShots == 0 && pitchShots == 0) continue; // don't dupe original
                 newShot = EntityList.createEntityFromNBT(nbt, world);
                 heading = Vec3.createVectorHelper(newShot.motionX, newShot.motionY, newShot.motionZ);
                 heading.rotateAroundY((float) (Config.multishot_spread * yawShots));
                 heading.rotateAroundX((float) (Config.multishot_spread * pitchShots));
                 setEntityV(newShot, heading);
-                //TODO: set cluster UUID so they can combine damage
+                // TODO: set cluster UUID so they can combine damage
                 world.joinEntityInSurroundings(newShot);
             }
         }

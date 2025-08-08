@@ -6,9 +6,11 @@ import net.minecraft.init.Items;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class IllageRecipes {
+
     public static void register() {
-        if (Config.craftable_crossbow)
-            GameRegistry.addRecipe(new ShapedOreRecipe(IllageItems.XBOW,
+        if (Config.craftable_crossbow) GameRegistry.addRecipe(
+            new ShapedOreRecipe(
+                IllageItems.XBOW,
                 "SIS",
                 "tht",
                 " S ",

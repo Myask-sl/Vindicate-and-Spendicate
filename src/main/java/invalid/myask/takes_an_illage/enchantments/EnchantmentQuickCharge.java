@@ -3,6 +3,7 @@ package invalid.myask.takes_an_illage.enchantments;
 import invalid.myask.takes_an_illage.Config;
 
 public class EnchantmentQuickCharge extends EnchantmentCrossbow {
+
     public EnchantmentQuickCharge(int id, int weight) {
         super(id, weight);
         setName("xbow.quickcharge");
