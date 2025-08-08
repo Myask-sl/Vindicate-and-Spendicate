@@ -8,8 +8,7 @@ public class Config {
     public static int enchid_quickcharge = 67;
     public static int enchid_multishot = 68;
     public static int enchid_piercing = 69;
-
-    public static boolean crossbow_enchants_enable = true;
+    public static int enchid_multishot_y = 70;
 
     public static int max_level_piercing = 4;
     public static int max_level_quickcharge = 3;
@@ -18,6 +17,10 @@ public class Config {
     public static int crossbow_base_charge_ticks = 25;
     public static int ticks_per_quickcharge = 5;
 
+    public static boolean craftable_crossbow = true;
+    public static boolean crossbow_enchants_enable = true;
+    public static boolean random_crossbow_damage = true; //Javalike
+    public static boolean multishot_y_enable = true;
 
     public static void synchronizeConfiguration(File configFile) {
         Configuration configuration = new Configuration(configFile);
