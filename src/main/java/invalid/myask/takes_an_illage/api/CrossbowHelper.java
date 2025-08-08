@@ -98,7 +98,7 @@ public class CrossbowHelper {
                 if (ammo != null) {
                     Item ammoItem = ammo.getItem();
                     if (ammoItem != null) {
-                        result = ammoItem.getUnlocalizedName().substring(6);
+                        result = ammoItem.getUnlocalizedName().substring(5);
                     }
                 }
             }
@@ -150,7 +150,7 @@ public class CrossbowHelper {
             world.playSoundAtEntity(user, "random.bow", 1F, 0.9F + user.getRNG().nextFloat() * 0.25F);
         } //else if (shot instanceof EntityFireworkRocket) {
         //    world.playSoundAtEntity(); //Firework plays its own.
-        world.joinEntityInSurroundings(shot);
+        if (!world.isRemote) world.spawnEntityInWorld(shot);
         applyCrossbowEnchantsToShot(shot, launcher, world, user);
     }
 

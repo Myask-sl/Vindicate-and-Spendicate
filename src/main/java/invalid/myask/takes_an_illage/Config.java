@@ -23,6 +23,7 @@ public class Config {
     public static boolean random_crossbow_damage = true; // Javalike
     public static boolean multishot_y_enable = true;
     public static double multishot_spread = Math.PI / 18;
+    public static boolean addToVanillaTabs = false;
 
     public static void synchronizeConfiguration(File configFile) {
         Configuration configuration = new Configuration(configFile);

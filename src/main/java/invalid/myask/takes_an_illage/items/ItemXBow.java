@@ -25,6 +25,7 @@ public class ItemXBow extends Item {
     public static IIcon iconArrow, iconSpectralArrow, iconTippedArrow, iconRocket, iconBlank;
 
     public ItemXBow() {
+        setMaxStackSize(1);
         setMaxDamage(465);
     }
 
@@ -41,59 +42,63 @@ public class ItemXBow extends Item {
     @Override
     public IIcon getIcon(ItemStack stack, int pass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
         return pass == 1 ? CrossbowHelper.getLoadIcon(stack)
-            : percentPulled(stack, player, useRemaining) >= 100 ? iconCocked : itemIcon;
+            : percentPulled(stack, player, usingItem == stack, useRemaining) >= 100 ? iconCocked : itemIcon;
     }
 
-    /**
-     * Actually "when use ticks run out"
-     *
-     * @param stack before stack
-     * @param world world
-     * @param user  user
-     * @return after stack
-     */
     @Override
-    public ItemStack onEaten(ItemStack stack, World world, EntityPlayer user) {
-        return switch (getLoad(stack)) {
-            case 0, 1, 2, 3 -> {
-                CrossbowHelper.launchProjectile(stack, world, user, null);
-                yield stack.attemptDamageItem(1, user.getRNG()) ? null : stack;
-            }
-            /* case -1 */ default -> {
-                int slot = CrossbowHelper.findProjectile(user.inventory);
-                if (slot != -1) {
-                    NBTTagCompound nbt = stack.getTagCompound();
-                    if (nbt == null) {
-                        nbt = new NBTTagCompound();
-                        stack.setTagCompound(nbt);
-                    }
-                    NBTTagList projlist;
-                    if (nbt.hasKey("charged_projectile")) projlist = nbt.getTagList("charged_projectile", 10);
-                    else {
-                        projlist = new NBTTagList();
-                        nbt.setTag("charged_projectile", projlist);
-                    }
-                    ItemStack ammoSource = user.inventory.getStackInSlot(slot);
-                    if (user.capabilities.isCreativeMode
-                        || EnchantmentHelper.getEnchantmentLevel(EnchantmentArrowInfinite.infinity.effectId, stack) > 0) {
-                        ammoSource = ammoSource.copy();
-                        ammoSource.stackSize = 1;
-                    } else ammoSource = ammoSource.splitStack(1);
-
-                    projlist.appendTag(ammoSource.writeToNBT(new NBTTagCompound()));
+    public void onUsingTick(ItemStack stack, EntityPlayer user, int count) {
+        if (getMaxItemUseDuration(stack) - count == pullTime(stack)) {
+            int slot = CrossbowHelper.findProjectile(user.inventory);
+            if (slot != -1) {
+                NBTTagCompound nbt = stack.getTagCompound();
+                if (nbt == null) {
+                    nbt = new NBTTagCompound();
+                    stack.setTagCompound(nbt);
                 }
-                yield stack;
+                NBTTagList projlist;
+                if (nbt.hasKey("charged_projectile")) projlist = nbt.getTagList("charged_projectile", 10);
+                else {
+                    projlist = new NBTTagList();
+                    nbt.setTag("charged_projectile", projlist);
+                }
+                ItemStack ammoSource = user.inventory.getStackInSlot(slot);
+                if (user.capabilities.isCreativeMode
+                    || EnchantmentHelper.getEnchantmentLevel(EnchantmentArrowInfinite.infinity.effectId, stack) > 0) {
+                    ammoSource = ammoSource.copy();
+                    ammoSource.stackSize = 1;
+                } else ammoSource = ammoSource.splitStack(1);
+                //TODO: charge SFX?
+
+                projlist.appendTag(ammoSource.writeToNBT(new NBTTagCompound()));
             }
-        };
+        }
     }
 
-    public int percentPulled(ItemStack stack, EntityPlayer player, int useRemaining) {
-        int maxUse = getMaxItemUseDuration(stack);
-        return 100 * (int) (getLoad(stack) >= 0 ? 1 : (maxUse - useRemaining) / ((float) maxUse));
+    public int percentPulled(ItemStack stack, EntityPlayer player, boolean using, int useRemaining) {
+        int maxUse = pullTime(stack);
+        useRemaining = Math.min(useRemaining, maxUse);
+        return 100 * (int) (getLoad(stack) >= 0 ? 1 : using ? (maxUse - useRemaining) / ((float) maxUse) : 0);
+    }
+
+    @Override
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer user) {
+        if (getLoad(stack) >= 0 && user.getItemInUseDuration() == 0) { //loaded
+            CrossbowHelper.launchProjectile(stack, world, user, null);
+            return stack.attemptDamageItem(1, user.getRNG()) ? null : stack;
+        }
+        else if (user.capabilities.isCreativeMode || CrossbowHelper.findProjectile(user.inventory) >= 0)
+        {
+            user.setItemInUse(stack, getMaxItemUseDuration(stack));
+        }
+        return super.onItemRightClick(stack, world, user);
     }
 
     @Override
     public int getMaxItemUseDuration(ItemStack stack) {
+        return 65535;
+    }
+
+    public int pullTime(ItemStack stack) {
         return Config.crossbow_base_charge_ticks
             - EnchantmentHelper.getEnchantmentLevel(Config.enchid_quickcharge, stack) * Config.ticks_per_quickcharge;
     }
