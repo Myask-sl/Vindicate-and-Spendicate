@@ -146,8 +146,8 @@ public class CrossbowHelper {
             ((IXbowArrow)shotArrow).takesAnIllage$setFixedDamage(true);
             if (EnchantmentHelper.getEnchantmentLevel(Enchantment.flame.effectId, launcher) > 0)
                 shotArrow.setFire(100);
-            pickup = pickup && EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, launcher) == 0;
-            shotArrow.canBePickedUp = pickup ? 1 : 2;
+            pickup = EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, launcher) == 0;
+            shotArrow.canBePickedUp = pickup ? 1 : 0;
             shotArrow.setKnockbackStrength(EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, launcher));
 
             world.playSoundAtEntity(user, "random.bow", 1F, 0.9F + user.getRNG().nextFloat() * 0.25F);
