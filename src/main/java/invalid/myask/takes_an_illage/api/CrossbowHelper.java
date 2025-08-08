@@ -20,6 +20,7 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -143,13 +144,25 @@ public class CrossbowHelper {
         NBTTagCompound nbt = new NBTTagCompound();
         originalShot.writeToNBTOptional(nbt);
         Entity newShot;
+        Vec3 heading;
         //TODO: give cluster UUID so they can combine damage
         for (int yawShots = -multishotX; yawShots <= multishotX; yawShots++) {
             for (int pitchShots = -multishotY; pitchShots <= multishotY; pitchShots++) {
                 if (yawShots == 0 && pitchShots == 0) continue; //don't dupe original
                 newShot = EntityList.createEntityFromNBT(nbt, world);
-
+                heading = Vec3.createVectorHelper(newShot.motionX, newShot.motionY, newShot.motionZ);
+                heading.rotateAroundY((float) (Config.multishot_spread * yawShots));
+                heading.rotateAroundX((float) (Config.multishot_spread * pitchShots));
+                setEntityV(newShot, heading);
+                //TODO: set cluster UUID so they can combine damage
+                world.joinEntityInSurroundings(newShot);
             }
         }
+    }
+
+    public static void setEntityV(Entity newShot, Vec3 heading) {
+        newShot.motionX = heading.xCoord;
+        newShot.motionY = heading.yCoord;
+        newShot.motionZ = heading.zCoord;
     }
 }

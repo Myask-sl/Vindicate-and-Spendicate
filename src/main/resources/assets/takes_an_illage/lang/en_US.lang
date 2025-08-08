@@ -3,3 +3,4 @@ item.crossbow.name=Crossbow
 enchantment.xbow.quickcharge=Quick Charge
 enchantment.xbow.pierce=Piercing
 enchantment.xbow.multishot=Multishot
+enchantment.xbow.multishot.y=Multishot (vertical)
