@@ -53,8 +53,11 @@ public class ProjectileFireworkRocket extends EntityFireworkRocket {
             Entity finalHit = null;
             for (Entity e : hits) {
                 if (e == shooter) continue;
-                if (e.getBoundingBox().intersectsWith(this.boundingBox)) {
-                    finalHit = e; break;
+                if (e instanceof EntityLivingBase) {
+                    if (e.boundingBox.intersectsWith(this.boundingBox)) {
+                        finalHit = e;
+                        break;
+                    }
                 }
             }
             if (finalHit != null) {
