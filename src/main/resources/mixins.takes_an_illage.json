@@ -7,6 +7,7 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "MixinEntityArrow_pierce",
+    "MixinEntityArrow_xbowdamage",
     "MixinEntitySkeleton_xbow_enchants",
     "MixinItemBow_xbow_enchants"
   ],

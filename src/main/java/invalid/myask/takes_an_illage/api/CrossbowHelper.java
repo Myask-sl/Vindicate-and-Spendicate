@@ -141,6 +141,7 @@ public class CrossbowHelper {
             }
             shotArrow.setDamage(EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, launcher) * 2
                 + shotArrow.getDamage());
+            ((IXbowArrow)shotArrow).takesAnIllage$setFixedDamage(true);
             if (EnchantmentHelper.getEnchantmentLevel(Enchantment.flame.effectId, launcher) > 0)
                 shotArrow.setFire(100);
             pickup = pickup && EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, launcher) == 0;
@@ -150,8 +151,8 @@ public class CrossbowHelper {
             world.playSoundAtEntity(user, "random.bow", 1F, 0.9F + user.getRNG().nextFloat() * 0.25F);
         } //else if (shot instanceof EntityFireworkRocket) {
         //    world.playSoundAtEntity(); //Firework plays its own.
-        if (!world.isRemote) world.spawnEntityInWorld(shot);
         applyCrossbowEnchantsToShot(shot, launcher, world, user);
+        if (!world.isRemote) world.spawnEntityInWorld(shot);
     }
 
 
@@ -183,6 +184,7 @@ public class CrossbowHelper {
                 heading = Vec3.createVectorHelper(newShot.motionX, newShot.motionY, newShot.motionZ);
                 heading.rotateAroundY((float) (Config.multishot_spread * yawShots));
                 heading.rotateAroundX((float) (Config.multishot_spread * pitchShots));
+                //FIXME: these aren't the right fns. rotate around player-local X,Y
 
                 setEntityV(newShot, heading);
                 if (newShot instanceof EntityArrow newArrow) newArrow.shootingEntity =
