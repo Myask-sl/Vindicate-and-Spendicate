@@ -8,6 +8,7 @@ import net.minecraft.world.World;
 public class ProjectileFireworkRocket extends EntityFireworkRocket {
     EntityLivingBase shooter = null;
 
+    @SuppressWarnings("unused")
     public ProjectileFireworkRocket(World w) {//this ctor is used by reflection in vanilla
         super(w);
     }

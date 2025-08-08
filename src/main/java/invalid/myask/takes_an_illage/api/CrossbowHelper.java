@@ -60,7 +60,7 @@ public class CrossbowHelper {
 
     /**
      * Finds suitable crossbow projectile.
-     * @param inventory
+     * @param inventory to search
      * @return slot index of projectile
      */
     public static int findProjectile(IInventory inventory) {
@@ -130,7 +130,7 @@ public class CrossbowHelper {
                 shotArrow.setDamage(((EntityArrow) shot).getDamage() * .46);
             shotArrow.setDamage(EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, launcher) * 2
                 + shotArrow.getDamage());
-            world.playSoundAtEntity(user, "random.bow", 1F, 0.9F + user.getRNG().nextFloat(0.25F));
+            world.playSoundAtEntity(user, "random.bow", 1F, 0.9F + user.getRNG().nextFloat() * 0.25F);
         } //else if (shot instanceof EntityFireworkRocket) {
         //    world.playSoundAtEntity(); //Firework plays its own.
         world.joinEntityInSurroundings(shot);
