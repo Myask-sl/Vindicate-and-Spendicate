@@ -5,13 +5,13 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.enchantment.EnchantmentArrowInfinite;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 import ganymedes01.etfuturum.ModItems;
@@ -21,7 +21,7 @@ import invalid.myask.takes_an_illage.api.CrossbowHelper;
 
 public class ItemXBow extends Item {
 
-    public IIcon iconCocked;
+    public IIcon[] iconCocked;
     public static IIcon iconArrow, iconSpectralArrow, iconTippedArrow, iconRocket, iconBlank;
 
     public ItemXBow() {
@@ -111,14 +111,21 @@ public class ItemXBow extends Item {
 
     @Override
     public IIcon getIcon(ItemStack stack, int pass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
-        return getLoad(stack) >= 0 ? CrossbowHelper.getLoadIcon(stack)
-            : percentPulled(stack, player, usingItem == stack, useRemaining) >= 80 ? iconCocked : itemIcon;
+        if (getLoad(stack) >= 0) return CrossbowHelper.getLoadIcon(stack);
+        return iconCocked[MathHelper.clamp_int(
+            (percentPulled(stack, player, usingItem == stack, useRemaining) + 9) / 20,
+            0, 5)];
     }
 
     @Override
     public void registerIcons(IIconRegister register) {
         super.registerIcons(register);
-        iconCocked = register.registerIcon(getIconString() + "_cocked");
+        iconCocked = new IIcon[] {itemIcon,
+            register.registerIcon(getIconString() + "_pull1"),
+            register.registerIcon(getIconString() + "_pull2"),
+            register.registerIcon(getIconString() + "_pull3"),
+            register.registerIcon(getIconString() + "_pull4"),
+            register.registerIcon(getIconString() + "_cocked")};
         if (iconArrow == null) {
             iconArrow = register.registerIcon(TakesAnIllage.MODID + ":crossbow_arrow");
             iconSpectralArrow = register.registerIcon(TakesAnIllage.MODID + ":crossbow_spectral_arrow");
