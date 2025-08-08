@@ -23,6 +23,7 @@ public class CommonProxy {
 
         IllageItems.register();
         IllageEnchantments.register();
+        IllageEntities.register();
     }
 
     // load "Do your mod setup. Build whatever data structures you care about. Register recipes." (Remove if not needed)

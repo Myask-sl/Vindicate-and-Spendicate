@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
+import invalid.myask.takes_an_illage.TakesAnIllage;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -175,13 +176,15 @@ public class CrossbowHelper {
         if (multishotX + multishotY == 0) return;
         NBTTagCompound nbt = new NBTTagCompound();
         originalShot.writeToNBTOptional(nbt);
-        Entity newShot;
+        Entity newShot = null;
         Vec3 heading;
         // TODO: give cluster UUID so they can combine damage
+        out:
         for (int yawShots = -multishotX; yawShots <= multishotX; yawShots++) {
             for (int pitchShots = -multishotY; pitchShots <= multishotY; pitchShots++) {
                 if (yawShots == 0 && pitchShots == 0) continue; // don't dupe original
                 newShot = EntityList.createEntityFromNBT(nbt, world);
+                if (newShot == null) break out;
                 heading = Vec3.createVectorHelper(newShot.motionX, newShot.motionY, newShot.motionZ);
                 heading.rotateAroundY((float) (Config.multishot_spread * yawShots));
                 heading.rotateAroundX((float) (Config.multishot_spread * pitchShots));
@@ -194,6 +197,7 @@ public class CrossbowHelper {
                 if (!world.isRemote) world.spawnEntityInWorld(newShot);
             }
         }
+        if (newShot == null) TakesAnIllage.LOG.warn("WARNING, Multishot could not copy projectile {}!", originalShot.toString());
     }
 
     public static Vec3 entityPosAsVec(Entity e) {

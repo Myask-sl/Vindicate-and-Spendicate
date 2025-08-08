@@ -16,6 +16,8 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
     name = TakesAnIllage.MODNAME,
     acceptedMinecraftVersions = "[" + Tags.MINECRAFT_VERSION + "]")
 public class TakesAnIllage {
+    @Mod.Instance(Tags.MODID)
+    public static TakesAnIllage instance;
 
     public static final String MODID = Tags.MODID;
     public static final String MODNAME = Tags.MODNAME;
