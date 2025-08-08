@@ -14,8 +14,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 
+import invalid.myask.takes_an_illage.api.IPierceArrow;\
+
 @Mixin(EntityArrow.class)
-public abstract class MixinEntityArrow_pierce extends Entity {
+public abstract class MixinEntityArrow_pierce extends Entity implements IPierceArrow {
 
     public MixinEntityArrow_pierce(World worldIn) {
         super(worldIn);
@@ -44,11 +46,21 @@ public abstract class MixinEntityArrow_pierce extends Entity {
 
     @Inject(method = "writeEntityToNBT", at = @At("TAIL"))
     private void writeMoreNBT(NBTTagCompound tagCompound, CallbackInfo ci) {
-        if (takes_an_illage$piercesRemaining > 0) tagCompound.setInteger("pierces", takes_an_illage$piercesRemaining);
+        if (takes_an_illage$piercesRemaining > 0) tagCompound.setInteger("pierces", takesAnIllage$getPierce());
     }
 
     @Inject(method = "readEntityFromNBT", at = @At("TAIL"))
     private void readMoreNBT(NBTTagCompound tagCompound, CallbackInfo ci) {
-        takes_an_illage$piercesRemaining = tagCompound.getInteger("pierces");
+        takesAnIllage$setPierce(tagCompound.getInteger("pierces"));
+    }
+
+    @Override
+    public void takesAnIllage$setPierce(int number) {
+        takes_an_illage$piercesRemaining = Math.max(number, 0);
+    }
+
+    @Override
+    public int takesAnIllage$getPierce() {
+        return takes_an_illage$piercesRemaining;
     }
 }

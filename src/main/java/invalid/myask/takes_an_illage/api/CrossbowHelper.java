@@ -134,15 +134,37 @@ public class CrossbowHelper {
             if (Config.random_crossbow_damage) shotArrow.setDamage(
                 user.getRNG().nextInt(5) + 7);
             else shotArrow.setDamage(9);
-            if (!(user instanceof EntityPlayer))
+            boolean pickup = true;
+            if (!(user instanceof EntityPlayer)) {
                 shotArrow.setDamage(((EntityArrow) shot).getDamage() * .46);
+                if (shotArrow.getClass() == EntityArrow.class) pickup = false;
+            }
             shotArrow.setDamage(EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, launcher) * 2
                 + shotArrow.getDamage());
+            if (EnchantmentHelper.getEnchantmentLevel(Enchantment.flame.effectId, launcher) > 0)
+                shotArrow.setFire(100);
+            pickup = pickup && EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, launcher) == 0;
+            shotArrow.canBePickedUp = pickup ? 1 : 2;
+            shotArrow.setKnockbackStrength(EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, launcher));
+
             world.playSoundAtEntity(user, "random.bow", 1F, 0.9F + user.getRNG().nextFloat() * 0.25F);
         } //else if (shot instanceof EntityFireworkRocket) {
         //    world.playSoundAtEntity(); //Firework plays its own.
         world.joinEntityInSurroundings(shot);
-        multiShoot(shot, launcher, world, user);
+        applyCrossbowEnchantsToShot(shot, launcher, world, user);
+    }
+
+
+    public static void setEntityV(Entity newShot, Vec3 heading) {
+        newShot.motionX = heading.xCoord;
+        newShot.motionY = heading.yCoord;
+        newShot.motionZ = heading.zCoord;
+    }
+
+    public static void applyCrossbowEnchantsToShot(Entity shot, ItemStack launcher, World world, EntityLivingBase user) {
+        if (shot instanceof IPierceArrow modArrow) modArrow
+            .takesAnIllage$setPierce(EnchantmentHelper.getEnchantmentLevel(Config.enchid_piercing, launcher));
+        CrossbowHelper.multiShoot(shot, launcher, world, user);
     }
 
     public static void multiShoot(Entity originalShot, ItemStack launcher, World world, EntityLivingBase user) {
@@ -166,11 +188,5 @@ public class CrossbowHelper {
                 world.joinEntityInSurroundings(newShot);
             }
         }
-    }
-
-    public static void setEntityV(Entity newShot, Vec3 heading) {
-        newShot.motionX = heading.xCoord;
-        newShot.motionY = heading.yCoord;
-        newShot.motionZ = heading.zCoord;
     }
 }

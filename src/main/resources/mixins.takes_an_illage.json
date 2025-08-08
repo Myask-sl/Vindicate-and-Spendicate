@@ -5,7 +5,11 @@
   "refmap": "mixins.takes_an_illage.refmap.json",
   "target": "@env(DEFAULT)",
   "compatibilityLevel": "JAVA_8",
-  "mixins": [],
+  "mixins": [
+    "MixinEntityArrow_pierce",
+    "MixinEntitySkeleton_xbow_enchants",
+    "MixinItemBow_xbow_enchants"
+  ],
   "client": [],
   "server": []
 }
