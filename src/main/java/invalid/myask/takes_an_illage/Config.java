@@ -24,6 +24,7 @@ public class Config {
     public static boolean multishot_y_enable = true;
     public static double multishot_spread = Math.PI / 18;
     public static boolean addToVanillaTabs = false;
+    public static boolean fireworks_impact_fuse = true; //like Java
 
     public static void synchronizeConfiguration(File configFile) {
         Configuration configuration = new Configuration(configFile);

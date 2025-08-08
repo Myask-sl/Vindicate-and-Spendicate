@@ -1,6 +1,10 @@
 itemGroup.takesAnIllage=It Takes An Illage
 item.crossbow.name=Crossbow
 
+death.attack.fireworks=%1$s went off with a bang
+death.attack.shotfireworks=%1$s experienced %2$s's fireworks display finally
+death.attack.shotfireworks.item=%1$s experienced %2$s's fireworks display of %3$s finally
+
 enchantment.xbow.quickcharge=Quick Charge
 enchantment.xbow.pierce=Piercing
 enchantment.xbow.multishot=Multishot
