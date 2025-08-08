@@ -13,16 +13,17 @@ public class IllageItems {
     public static ItemXBow XBOW;
 
     public static void register() {
-        XBOW = new ItemXBow();
-        XBOW.setUnlocalizedName("crossbow")
-            .setTextureName(TakesAnIllage.MODID + ":crossbow");
-        registerAnItem(XBOW, CreativeTabs.tabCombat);
         if (!Config.addToVanillaTabs) TAB = new CreativeTabs("takesAnIllage") {
             @Override
             public Item getTabIconItem() {
                 return XBOW;
             }
         };
+
+        XBOW = new ItemXBow();
+        XBOW.setUnlocalizedName("crossbow")
+            .setTextureName(TakesAnIllage.MODID + ":crossbow");
+        registerAnItem(XBOW, CreativeTabs.tabCombat);
     }
 
     static void registerAnItem(Item item, CreativeTabs vanillaTab) {

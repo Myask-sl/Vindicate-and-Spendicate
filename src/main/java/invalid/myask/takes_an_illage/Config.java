@@ -26,6 +26,8 @@ public class Config {
     public static boolean addToVanillaTabs = false;
     public static boolean fireworks_impact_fuse = true; //like Java
 
+    public static boolean permit_multishot_damage_same = true; //TODO not in yet. Vanilla hasn't fixed.
+
     public static void synchronizeConfiguration(File configFile) {
         Configuration configuration = new Configuration(configFile);
         // TODO: all configurables
