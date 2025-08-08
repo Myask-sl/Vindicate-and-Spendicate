@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 
-import invalid.myask.takes_an_illage.api.IPierceArrow;\
+import invalid.myask.takes_an_illage.api.IPierceArrow;
 
 @Mixin(EntityArrow.class)
 public abstract class MixinEntityArrow_pierce extends Entity implements IPierceArrow {
