@@ -24,6 +24,10 @@ public class ItemXBow extends Item {
     public IIcon iconCocked;
     public static IIcon iconArrow, iconSpectralArrow, iconTippedArrow, iconRocket, iconBlank;
 
+    public ItemXBow() {
+        setMaxDamage(465);
+    }
+
     @Override
     public boolean requiresMultipleRenderPasses() {
         return true;
@@ -120,10 +124,11 @@ public class ItemXBow extends Item {
         super.registerIcons(register);
         iconCocked = register.registerIcon(getIconString() + "_cocked");
         if (iconArrow == null) {
-            iconArrow = register.registerIcon(TakesAnIllage.MODID + ":xbow_arrow");
-            iconSpectralArrow = register.registerIcon(TakesAnIllage.MODID + ":xbow_arrow_spectral");
-            iconRocket = register.registerIcon(TakesAnIllage.MODID + ":xbow_rocket");
-            iconBlank = getIcon(new ItemStack(Blocks.air), 0);
+            iconArrow = register.registerIcon(TakesAnIllage.MODID + ":crossbow_arrow");
+            iconSpectralArrow = register.registerIcon(TakesAnIllage.MODID + ":crossbow_spectral_arrow");
+            iconTippedArrow = register.registerIcon(TakesAnIllage.MODID + ":crossbow_tipped_arrow");
+            iconRocket = register.registerIcon(TakesAnIllage.MODID + ":crossbow_rocket");
+            iconBlank = register.registerIcon(TakesAnIllage.MODID + ":blank");
         }
     }
 }
