@@ -1,11 +1,15 @@
 package invalid.myask.takes_an_illage.entities;
 
 import java.util.List;
+import java.util.UUID;
 
+import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityFireworkRocket;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
@@ -13,9 +17,10 @@ import invalid.myask.takes_an_illage.Config;
 import invalid.myask.takes_an_illage.api.CrossbowHelper;
 import invalid.myask.takes_an_illage.api.IBlowUp;
 
-public class ProjectileFireworkRocket extends EntityFireworkRocket {
+public class ProjectileFireworkRocket extends EntityFireworkRocket implements IEntityAdditionalSpawnData {
 
     EntityLivingBase shooter = null;
+    UUID shooterUUID = null;
 
     @SuppressWarnings("unused")
     public ProjectileFireworkRocket(World w) {// this ctor is used by reflection in vanilla
@@ -29,6 +34,7 @@ public class ProjectileFireworkRocket extends EntityFireworkRocket {
     public ProjectileFireworkRocket(World world, EntityLivingBase user, ItemStack ammo) {
         super(world, user.posX, user.posY, user.posZ, ammo);
         this.shooter = user;
+        this.shooterUUID = user.getPersistentID();
         Vec3 lookvec = user.getLookVec().normalize();
         CrossbowHelper.setEntityV(this, lookvec);
     }
@@ -52,8 +58,8 @@ public class ProjectileFireworkRocket extends EntityFireworkRocket {
 
             Entity finalHit = null;
             for (Entity e : hits) {
-                if (e == shooter) continue;
                 if (e instanceof EntityLivingBase) {
+                    if (e.getUniqueID().equals(shooterUUID)) continue;
                     if (e.boundingBox.intersectsWith(this.boundingBox)) {
                         finalHit = e;
                         break;
@@ -70,5 +76,40 @@ public class ProjectileFireworkRocket extends EntityFireworkRocket {
 
     public EntityLivingBase getShooter() {
         return shooter;
+    }
+
+    @Override
+    public void writeSpawnData(ByteBuf buffer) {
+        UUID uuid = shooter.getUniqueID();
+        buffer.writeLong(uuid.getLeastSignificantBits());
+        buffer.writeLong(uuid.getMostSignificantBits());
+    }
+
+    @Override
+    public void readSpawnData(ByteBuf additionalData) {
+        long low, high;
+        low = additionalData.readLong();
+        high = additionalData.readLong();
+        shooterUUID = new UUID(high, low);
+        for (Entity e : this.worldObj.getLoadedEntityList()) {
+            if (e instanceof EntityLivingBase elb && elb.getPersistentID().equals(shooterUUID)) shooter = elb;
+        }
+    }
+
+    @Override
+    public void writeEntityToNBT(NBTTagCompound tagCompund) {
+        super.writeEntityToNBT(tagCompund);
+        tagCompund.setLong("shooterUUIDMSB", shooterUUID.getMostSignificantBits());
+        tagCompund.setLong("shooterUUIDLSB", shooterUUID.getLeastSignificantBits());
+    }
+
+    @Override
+    public void readEntityFromNBT(NBTTagCompound tagCompund) {
+        super.readEntityFromNBT(tagCompund);
+        if (tagCompund.hasKey("shooterUUIDMSB")) {
+            long high = tagCompund.getLong("shooterUUIDMSB"),
+                low = tagCompund.getLong("shooterUUIDLSB");
+            shooterUUID = new UUID(high, low);
+        }
     }
 }
