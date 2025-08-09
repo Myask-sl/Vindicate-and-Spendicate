@@ -18,28 +18,26 @@ public class FireworksExploder {
     public static void explodeForDamageMaybe(Entity firework, ItemStack rocket) {
         if (!firework.worldObj.isRemote && rocket != null && rocket.getTagCompound() != null && rocket.getTagCompound().hasKey("Fireworks")) {
             NBTTagCompound fireworksnbt = rocket.getTagCompound().getCompoundTag("Fireworks");
-            if (fireworksnbt != null) {
-                if (fireworksnbt.hasKey("Explosions")) {
-                    int explosions = fireworksnbt.getTagList("Explosions", 10).tagCount(),
-                        damageMax = 5 + 2 * explosions;
-                    List<Entity> hits = firework.worldObj.getEntitiesWithinAABBExcludingEntity(firework, AxisAlignedBB.getBoundingBox(
-                        firework.posX - 5, firework.posY  -5, firework.posZ - 5, firework.posX + 5, firework.posY + 5, firework.posZ + 5));
-                    for (Entity e : hits) {
-                        if (e instanceof EntityLivingBase elb) {
-                            double d = firework.getDistanceToEntity(elb);
-                            MovingObjectPosition movingObjectPosition = firework.worldObj.rayTraceBlocks(
-                                CrossbowHelper.entityPosAsVec(firework), CrossbowHelper.entityPosAsVec(elb),
-                                true); // liquids protect too
-                            if (movingObjectPosition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) continue;
-                            if (((Entity) firework) instanceof ProjectileFireworkRocket pfr)
-                                elb.attackEntityFrom(
-                                    new EntityDamageSourceIndirect("shotfireworks",
-                                        firework, pfr.getShooter()), (float) (damageMax / d));
-                            else
-                                elb.attackEntityFrom(
-                                    new EntityDamageSource("fireworks",
-                                        firework), (float) (damageMax / d));
-                        }
+            if (fireworksnbt != null && fireworksnbt.hasKey("Explosions")) {
+                int explosions = fireworksnbt.getTagList("Explosions", 10).tagCount(),
+                    damageMax = 5 + 2 * explosions;
+                List<Entity> hits = firework.worldObj.getEntitiesWithinAABBExcludingEntity(firework, AxisAlignedBB.getBoundingBox(
+                    firework.posX - 5, firework.posY  -5, firework.posZ - 5, firework.posX + 5, firework.posY + 5, firework.posZ + 5));
+                for (Entity e : hits) {
+                    if (e instanceof EntityLivingBase elb) {
+                        double d = firework.getDistanceToEntity(elb);
+                        MovingObjectPosition movingObjectPosition = firework.worldObj.rayTraceBlocks(
+                            CrossbowHelper.entityPosAsVec(firework), CrossbowHelper.entityPosAsVec(elb),
+                            true); // liquids protect too
+                        if (movingObjectPosition != null && movingObjectPosition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) continue;
+                        if (firework instanceof ProjectileFireworkRocket pfr)
+                            elb.attackEntityFrom(
+                                new EntityDamageSourceIndirect("shotfireworks",
+                                    firework, pfr.getShooter()), (float) (damageMax / d));
+                        else
+                            elb.attackEntityFrom(
+                                new EntityDamageSource("fireworks",
+                                    firework), (float) (damageMax / d));
                     }
                 }
             }
