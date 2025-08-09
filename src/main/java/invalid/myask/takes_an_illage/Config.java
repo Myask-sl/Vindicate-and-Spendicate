@@ -28,6 +28,9 @@ public class Config {
 
     public static boolean permit_multishot_damage_same = true; //TODO not in yet. Vanilla hasn't fixed.
 
+    public static boolean creative_pregen_modern_redundant_fireworks_nbt = false;
+    public static boolean creative_pregen_fireworks_extravagant = false;
+
     public static void synchronizeConfiguration(File configFile) {
         Configuration configuration = new Configuration(configFile);
         // TODO: all configurables
