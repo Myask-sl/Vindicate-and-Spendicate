@@ -29,13 +29,6 @@ public abstract class MixinEntityFireworkRocket_shotrocket extends Entity implem
     }
 
     @Inject(method = "onUpdate",
-    at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/item/EntityFireworkRocket;moveEntity(DDD)V"))
-    private void changeRocketry (CallbackInfo cbi) {
-        if (((Entity) this) instanceof ProjectileFireworkRocket)
-            this.motionY = (this.motionY - 0.041) * 1.15;
-    } //removes the "fly up" part and replaces with "fly in original direction" with very slight drop
-
-    @Inject(method = "onUpdate",
     at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;setEntityState(Lnet/minecraft/entity/Entity;B)V"))
     private void explosionsHurt (CallbackInfo cbi) {
         FireworksExploder.explodeForDamageMaybe(this, this.dataWatcher.getWatchableObjectItemStack(8));

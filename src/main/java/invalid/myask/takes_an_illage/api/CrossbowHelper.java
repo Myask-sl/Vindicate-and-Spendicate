@@ -157,6 +157,12 @@ public class CrossbowHelper {
         newShot.motionZ = heading.zCoord;
     }
 
+    public static void setEntityVTimes(Entity newShot, Vec3 heading, float scalar) {
+        newShot.motionX = heading.xCoord * scalar;
+        newShot.motionY = heading.yCoord * scalar;
+        newShot.motionZ = heading.zCoord * scalar;
+    }
+
     public static void applyCrossbowEnchantsToShot(Entity shot, ItemStack launcher, World world, EntityLivingBase user) {
         if (shot instanceof IPierceArrow modArrow) modArrow
             .takesAnIllage$setPierces(EnchantmentHelper.getEnchantmentLevel(Config.enchid_piercing, launcher));
@@ -169,6 +175,7 @@ public class CrossbowHelper {
         if (multishotX + multishotY == 0) return;
         NBTTagCompound nbt = new NBTTagCompound();
         originalShot.writeToNBTOptional(nbt);
+        if (originalShot instanceof ProjectileFireworkRocket) nbt.setInteger("Life", nbt.getInteger("Life") + 1);
         Entity newShot = null;
         Vec3 heading;
         // TODO: give cluster UUID so they can combine damage

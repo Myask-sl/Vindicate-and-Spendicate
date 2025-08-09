@@ -25,6 +25,7 @@ public class Config {
     public static double multishot_spread = Math.PI / 18;
     public static boolean addToVanillaTabs = false;
     public static boolean fireworks_impact_fuse = true; //like Java
+    public static float rocket_init_v_magnitude = 0.1F;
 
     public static boolean permit_multishot_damage_same = true; //TODO not in yet. Vanilla hasn't fixed.
 

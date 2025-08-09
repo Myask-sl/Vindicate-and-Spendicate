@@ -16,7 +16,6 @@ import net.minecraft.world.World;
 
 import invalid.myask.takes_an_illage.Config;
 import invalid.myask.takes_an_illage.api.CrossbowHelper;
-import invalid.myask.takes_an_illage.api.IBlowUp;
 
 public class ProjectileFireworkRocket extends EntityFireworkRocket implements IEntityAdditionalSpawnData {
 
@@ -37,7 +36,7 @@ public class ProjectileFireworkRocket extends EntityFireworkRocket implements IE
         this.shooter = user;
         this.shooterUUID = user.getPersistentID();
         Vec3 lookvec = user.getLookVec().normalize();
-        CrossbowHelper.setEntityV(this, lookvec);
+        CrossbowHelper.setEntityVTimes(this, lookvec, Config.rocket_init_v_magnitude);
     }
 
     public ProjectileFireworkRocket(World world, EntityLivingBase user, EntityLivingBase target, ItemStack ammo) {
@@ -52,6 +51,9 @@ public class ProjectileFireworkRocket extends EntityFireworkRocket implements IE
 
     @Override
     public void onUpdate() {
+        this.motionY -= 0.04;
+        this.motionX /= 1.15;
+        this.motionZ /= 1.15; //I don't need to mixin for this!
         super.onUpdate();
         if (Config.fireworks_impact_fuse) {
             List<Entity> hits = worldObj.getEntitiesWithinAABBExcludingEntity(this,
