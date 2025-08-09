@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
+import invalid.myask.takes_an_illage.utils.FireworksExploder;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -67,7 +68,7 @@ public class ProjectileFireworkRocket extends EntityFireworkRocket implements IE
                 }
             }
             if (finalHit != null) {
-                ((IBlowUp)this).takesAnIllage$explodeForDamageMaybe();
+                FireworksExploder.explodeForDamageMaybe(this, this.dataWatcher.getWatchableObjectItemStack(8));
                 this.worldObj.setEntityState(this, (byte)17);
                 this.setDead();
             }
