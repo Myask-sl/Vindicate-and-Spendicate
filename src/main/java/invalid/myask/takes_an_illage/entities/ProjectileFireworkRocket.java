@@ -32,7 +32,7 @@ public class ProjectileFireworkRocket extends EntityFireworkRocket implements IE
     }
 
     public ProjectileFireworkRocket(World world, EntityLivingBase user, ItemStack ammo) {
-        super(world, user.posX, user.posY, user.posZ, ammo);
+        super(world, user.posX, user.posY + user.getEyeHeight(), user.posZ, ammo);
         this.shooter = user;
         this.shooterUUID = user.getPersistentID();
         Vec3 lookvec = user.getLookVec().normalize();
@@ -40,8 +40,9 @@ public class ProjectileFireworkRocket extends EntityFireworkRocket implements IE
     }
 
     public ProjectileFireworkRocket(World world, EntityLivingBase user, EntityLivingBase target, ItemStack ammo) {
-        super(world, user.posX, user.posY, user.posZ, ammo);
+        super(world, user.posX, user.posY + user.getEyeHeight(), user.posZ, ammo);
         this.shooter = user;
+        this.shooterUUID = user.getPersistentID();
         Vec3 aimvec = Vec3.createVectorHelper(target.posX - user.posX + target.motionX * world.difficultySetting.ordinal(),
             target.posY - user.posY + target.motionY * world.difficultySetting.ordinal(),
             target.posZ - user.posZ + target.motionZ * world.difficultySetting.ordinal());
