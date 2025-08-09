@@ -80,9 +80,8 @@ public class ProjectileFireworkRocket extends EntityFireworkRocket implements IE
 
     @Override
     public void writeSpawnData(ByteBuf buffer) {
-        UUID uuid = shooter.getUniqueID();
-        buffer.writeLong(uuid.getLeastSignificantBits());
-        buffer.writeLong(uuid.getMostSignificantBits());
+        buffer.writeLong(shooterUUID.getLeastSignificantBits());
+        buffer.writeLong(shooterUUID.getMostSignificantBits());
     }
 
     @Override
