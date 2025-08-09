@@ -44,7 +44,7 @@ public class IllageItems {
                 nbtLargeBall.setByte("Type", (byte)1);
                 nbtLargeBall.setIntArray("Colors", colors);
                 nbtBang.setByte("Type", (byte) -1); //none
-                nbtLargeBall.setIntArray("Colors", new int[]{ItemDye.field_150922_c[0]});
+                nbtBang.setIntArray("Colors", new int[] {ItemDye.field_150922_c[0], ItemDye.field_150922_c[15]});
                 if (Config.creative_pregen_fireworks_extravagant) {
                     nbtLargeBall.setIntArray("FadeColors", colors);
                     nbtLargeBall.setBoolean("Trail", true);
