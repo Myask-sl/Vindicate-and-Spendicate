@@ -14,7 +14,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-import ganymedes01.etfuturum.ModItems;
+import invalid.myask.takes_an_illage.compat.EtFuturumWrappium;
 import invalid.myask.takes_an_illage.Config;
 import invalid.myask.takes_an_illage.TakesAnIllage;
 import invalid.myask.takes_an_illage.api.CrossbowHelper;
@@ -100,8 +100,8 @@ public class ItemXBow extends Item {
                     if (loadItem == Items.arrow) return 0;
                     if (loadItem == Items.fireworks) return 3;
                     if (loadItem != null && Loader.isModLoaded("etfuturum")) {
-                        if (loadItem == ModItems.TIPPED_ARROW.get()) return 2;
-                        // if (loadItem == ModItems.SPECTRAL_ARROW.get()) return 1; //uh...not there yet?
+                        int check = EtFuturumWrappium.getFuturumLoadium(loadItem);
+                        if (check != -1) return check;
                     }
                 }
             }

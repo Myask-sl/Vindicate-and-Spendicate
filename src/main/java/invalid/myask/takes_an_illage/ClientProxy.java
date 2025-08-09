@@ -5,8 +5,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 
-
-import ganymedes01.etfuturum.ModItems;
 import invalid.myask.takes_an_illage.api.CrossbowHelper;
 import invalid.myask.takes_an_illage.items.ItemXBow;
 
@@ -20,7 +18,8 @@ public class ClientProxy extends CommonProxy {
         CrossbowHelper.registerLoad(Items.arrow, ItemXBow.iconArrow);
         CrossbowHelper.registerLoad(Items.fireworks, ItemXBow.iconRocket);
         if (Loader.isModLoaded("etfuturum")) {
-            CrossbowHelper.registerLoad(ModItems.TIPPED_ARROW.get(), ItemXBow.iconTippedArrow);
+            Item tipped = GameRegistry.findItem("etfuturum", "tipped_arrow");
+            CrossbowHelper.registerLoad(tipped, ItemXBow.iconTippedArrow);
             Item spectral = GameRegistry.findItem("etfuturum", "spectral_arrow");
             if (spectral != null) CrossbowHelper.registerLoad(spectral, ItemXBow.iconSpectralArrow);
         }

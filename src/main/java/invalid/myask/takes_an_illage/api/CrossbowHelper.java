@@ -7,7 +7,6 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import invalid.myask.takes_an_illage.TakesAnIllage;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -26,9 +25,10 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
-import ganymedes01.etfuturum.entities.EntityTippedArrow;
+import invalid.myask.takes_an_illage.TakesAnIllage;
 import invalid.myask.takes_an_illage.Config;
 import invalid.myask.takes_an_illage.compat.BackhandWrapper;
+import invalid.myask.takes_an_illage.compat.EtFuturumWrappium;
 import invalid.myask.takes_an_illage.entities.ProjectileFireworkRocket;
 import invalid.myask.takes_an_illage.items.ItemXBow;
 
@@ -108,24 +108,17 @@ public class CrossbowHelper {
         if (target == null) { // probably player
             switch (result) {
                 case "tipped_arrow", "etfuturum.tipped_arrow" -> {
-                    shot = new EntityTippedArrow(world, user, 2);
-                    ((EntityTippedArrow) shot).setArrow(ammo);
+                    shot = EtFuturumWrappium.fletchTippedArrow(world, user, ammo);
                 }
                 case "spectral_arrow", "etfuturum.spectral_arrow" ->
-                    shot = new EntityArrow(world, user, 2); //TODO: when spectral arrows exist...replace
+                    shot = EtFuturumWrappium.fletchSpectralArrow(world, user, ammo);
                 case "fireworks" -> shot = new ProjectileFireworkRocket(world, user, ammo);
                 default -> shot = new EntityArrow(world, user, 2);
             }
         } else {
             switch (result) {
-                case "tipped_arrow" -> {
-                    shot = new EntityTippedArrow(world, user, target, 1.6F,
-                        (float) (14 - world.difficultySetting.getDifficultyId() * 4));
-                    ((EntityTippedArrow) shot).setArrow(ammo);
-                }
-                case "spectral_arrow" -> shot = new EntityArrow(world, user, target, 1.6F,
-                    (float) (14 - world.difficultySetting.getDifficultyId() * 4));
-                // TODO: when spectral arrows exist, replace
+                case "tipped_arrow" -> shot =  EtFuturumWrappium.fletchTippedArrow(world, user, target, ammo);
+                case "spectral_arrow" -> shot = EtFuturumWrappium.fletchSpectralArrow(world, user, target, ammo);
                 case "fireworks" -> shot = new ProjectileFireworkRocket(world, user, target, ammo);
                 default -> // "arrow".equals
                     shot = new EntityArrow(world, user, target, 1.6F,
