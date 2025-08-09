@@ -191,8 +191,10 @@ public class CrossbowHelper {
                 //FIXME: these aren't the right fns. rotate around player-local X,Y
 
                 setEntityV(newShot, heading);
-                if (newShot instanceof EntityArrow newArrow) newArrow.shootingEntity =
-                    ((EntityArrow)originalShot).shootingEntity;
+                if (newShot instanceof EntityArrow newArrow) {
+                    newArrow.shootingEntity = ((EntityArrow)originalShot).shootingEntity;
+                    newArrow.canBePickedUp = 0;
+                }
                 // TODO: set cluster UUID so they can combine damage
                 if (!world.isRemote) world.spawnEntityInWorld(newShot);
             }

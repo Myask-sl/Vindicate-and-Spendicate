@@ -109,12 +109,33 @@ public class ItemXBow extends Item {
         return -1;
     }
 
+    int display_temp = 4;
     @Override
     public IIcon getIcon(ItemStack stack, int pass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
         if (getLoad(stack) >= 0) return CrossbowHelper.getLoadIcon(stack);
-        return iconCocked[MathHelper.clamp_int(
+        return iconCocked[display_temp];/*MathHelper.clamp_int(
             (percentPulled(stack, player, usingItem == stack, useRemaining) + 9) / 20,
-            0, 5)];
+            0, 5)];*/
+    }
+
+    @Override
+    public IIcon getIcon(ItemStack stack, int pass) {
+        return super.getIcon(stack, pass);
+    }
+
+    @Override
+    public IIcon getIconIndex(ItemStack p_77650_1_) {
+        return super.getIconIndex(p_77650_1_);
+    }
+
+    @Override
+    public IIcon getIconFromDamageForRenderPass(int p_77618_1_, int p_77618_2_) {
+        return super.getIconFromDamageForRenderPass(p_77618_1_, p_77618_2_);
+    }
+
+    @Override
+    public IIcon getIconFromDamage(int p_77617_1_) {
+        return super.getIconFromDamage(p_77617_1_);
     }
 
     @Override
