@@ -1,0 +1,21 @@
+package invalid.myask.vindicateandspendicate.enchantments;
+
+import invalid.myask.vindicateandspendicate.Config;
+
+public class EnchantmentPiercing extends EnchantmentCrossbow {
+
+    public EnchantmentPiercing(int id, int weight) {
+        super(id, weight);
+        setName("xbow.pierce");
+    }
+
+    @Override
+    public int getMaxLevel() {
+        return Config.max_level_piercing;
+    }
+
+    @Override
+    public int getMinEnchantability(int level) {
+        return 1 + (level - 1) * 10;
+    }
+}

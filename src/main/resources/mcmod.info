@@ -3,7 +3,7 @@
 	"modList": [{
 		"modid": "${modId}",
 		"name": "${modName}",
-		"description": "It Takes An Illage takes crossbows and [eventually] the other guys back to 1.7.10. Uses Unimixins.",
+		"description": "Vindicate and Spendicate takes crossbows and [eventually] the other guys back to 1.7.10. Uses Unimixins.",
 		"version": "${modVersion}",
 		"mcversion": "${minecraftVersion}",
 		"url": "",
