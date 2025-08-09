@@ -9,7 +9,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 
-import invalid.myask.takes_an_illage.api.CrossbowHelper;
+import invalid.myask.vindicateandspendicate.api.CrossbowHelper;
 
 public class CommonProxy {
 

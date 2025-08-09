@@ -4,7 +4,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.item.ItemStack;
 
-import invalid.myask.takes_an_illage.items.ItemXBow;
+import invalid.myask.vindicateandspendicate.items.ItemXBow;
 
 public abstract class EnchantmentCrossbow extends Enchantment {
 
