@@ -25,7 +25,7 @@ public class FireworksExploder {
                     firework.posX - 5, firework.posY  -5, firework.posZ - 5, firework.posX + 5, firework.posY + 5, firework.posZ + 5));
                 for (Entity e : hits) {
                     if (e instanceof EntityLivingBase elb) {
-                        double d = firework.getDistanceToEntity(elb);
+                        double d = Math.max (firework.getDistanceToEntity(elb), 1);
                         MovingObjectPosition movingObjectPosition = firework.worldObj.rayTraceBlocks(
                             CrossbowHelper.entityPosAsVec(firework), CrossbowHelper.entityPosAsVec(elb),
                             true); // liquids protect too
