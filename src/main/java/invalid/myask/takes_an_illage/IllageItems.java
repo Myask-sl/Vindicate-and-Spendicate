@@ -37,8 +37,17 @@ public class IllageItems {
                 firework.setTagCompound(nbt);
                 nbt.setTag("Fireworks", nbtFireworks);
                 nbtFireworks.setTag("Explosions", nbtExplosions);
-                nbtLargeBall.setString("shape", "large_ball");
-                nbtLargeBall.setIntArray("colors", colors);
+
+                    nbtLargeBall.setString("shape", "large_ball");
+                nbtLargeBall.setByte("Type", (byte)1);
+                    nbtLargeBall.setIntArray("colors", colors);
+                nbtLargeBall.setIntArray("Colors", colors);
+                    nbtLargeBall.setIntArray("fade_colors", colors);
+                nbtLargeBall.setIntArray("FadeColors", colors);
+                    nbtLargeBall.setBoolean("has_trail", true);
+                nbtLargeBall.setBoolean("Trail", true);
+                    nbtLargeBall.setBoolean("has_twinkle", true);
+                nbtLargeBall.setBoolean("Flicker", true);
                 for (int j = 1; j <= 7; j += 6 ) {
                     nbtExplosions.appendTag(nbtLargeBall);
                     for (int i = 1; i <= 3; i++) {
