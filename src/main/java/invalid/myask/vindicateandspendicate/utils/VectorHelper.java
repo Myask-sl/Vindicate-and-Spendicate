@@ -6,6 +6,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.Vec3;
 
 public class VectorHelper {
+    public static final double RADPERDEG = Math.PI / 180;
+
     public static Vector3d createLookVec(Entity entity) {
         Vector3d result = new Vector3d(1,0,0);
         assignLookVec(entity, result);
@@ -14,8 +16,8 @@ public class VectorHelper {
 
     public static void assignLookVec(Entity entity, Vector3d result) {
         result.set(0,0,1);
-        result.rotateX(entity.rotationPitch);
-        result.rotateY(entity.rotationYaw);
+        result.rotateX(entity.rotationPitch * RADPERDEG);
+        result.rotateY(entity.rotationYaw * RADPERDEG);
     }
 
     public static Vec3 entityPosAsVec3(Entity e) {
