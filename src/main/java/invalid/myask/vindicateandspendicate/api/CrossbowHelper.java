@@ -24,7 +24,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 import invalid.myask.vindicateandspendicate.VindicateAndSpendicate;
@@ -33,6 +32,7 @@ import invalid.myask.vindicateandspendicate.compat.BackhandWrapper;
 import invalid.myask.vindicateandspendicate.compat.EtFuturumWrappium;
 import invalid.myask.vindicateandspendicate.entities.ProjectileFireworkRocket;
 import invalid.myask.vindicateandspendicate.items.ItemXBow;
+import invalid.myask.vindicateandspendicate.utils.VectorHelper;
 
 public class CrossbowHelper {
 
@@ -152,30 +152,6 @@ public class CrossbowHelper {
         if (!world.isRemote) world.spawnEntityInWorld(shot);
     }
 
-    public static void setEntityV(Entity newShot, Vec3 heading) {
-        newShot.motionX = heading.xCoord;
-        newShot.motionY = heading.yCoord;
-        newShot.motionZ = heading.zCoord;
-    }
-
-    public static void setEntityV(Entity newShot, Vector3d heading) {
-        newShot.motionX = heading.x;
-        newShot.motionY = heading.y;
-        newShot.motionZ = heading.z;
-    }
-
-    public static void setEntityVTimes(Entity newShot, Vec3 heading, float scalar) {
-        newShot.motionX = heading.xCoord * scalar;
-        newShot.motionY = heading.yCoord * scalar;
-        newShot.motionZ = heading.zCoord * scalar;
-    }
-
-    public static void setEntityVTimes(Entity newShot, Vector3d heading, float scalar) {
-        newShot.motionX = heading.x * scalar;
-        newShot.motionY = heading.y * scalar;
-        newShot.motionZ = heading.z * scalar;
-    }
-
     public static void applyCrossbowEnchantsToShot(Entity shot, ItemStack launcher, World world, EntityLivingBase user) {
         if (shot instanceof IPierceArrow modArrow) modArrow
             .vindicateAndSpendicate$setPierces(EnchantmentHelper.getEnchantmentLevel(Config.enchid_piercing, launcher));
@@ -194,14 +170,12 @@ public class CrossbowHelper {
         originalShot.prevRotationPitch = originalShot.rotationPitch;
         originalShot.rotationYaw -= 90;
         originalShot.rotationPitch = 0;
-        Vec3 temp = originalShot.getLookVec();
         Vector3d heading = new Vector3d(originalShot.motionX, originalShot.motionY, originalShot.motionZ),
-            sideAxis = new Vector3d(temp.xCoord, temp.yCoord, temp.zCoord), upAxis, newHeading;
+            sideAxis = VectorHelper.createLookVec(originalShot), upAxis, newHeading;
         originalShot.rotationYaw = originalShot.prevRotationYaw;
         originalShot.rotationPitch = originalShot.prevRotationPitch - 90;
-        temp = originalShot.getLookVec();
+        upAxis = VectorHelper.createLookVec(originalShot);
         originalShot.rotationPitch = originalShot.prevRotationPitch;
-        upAxis = new Vector3d(temp.xCoord, temp.yCoord, temp.zCoord);
         // TODO: give cluster UUID so they can combine damage
         out:
         for (int yawShots = -multishotX; yawShots <= multishotX; yawShots++) {
@@ -213,7 +187,7 @@ public class CrossbowHelper {
                 heading.rotateAxis((float) (Config.multishot_spread * yawShots), upAxis.x, upAxis.y, upAxis.z);
                 heading.rotateAxis((float) (Config.multishot_spread * pitchShots), sideAxis.x, sideAxis.y, sideAxis.z);
 
-                setEntityV(newShot, heading);
+                VectorHelper.setEntityV(newShot, heading);
                 if (newShot instanceof EntityArrow newArrow) {
                     newArrow.shootingEntity = ((EntityArrow)originalShot).shootingEntity;
                     newArrow.canBePickedUp = 0;
@@ -223,10 +197,6 @@ public class CrossbowHelper {
             }
         }
         if (newShot == null) VindicateAndSpendicate.LOG.warn("WARNING, Multishot could not copy projectile {}!", originalShot.toString());
-    }
-
-    public static Vec3 entityPosAsVec(Entity e) {
-        return Vec3.createVectorHelper(e.posX, e.posY, e.posZ);
     }
 
     public static void undoBounce(Entity shot, MovingObjectPosition movingObjectPosition) {

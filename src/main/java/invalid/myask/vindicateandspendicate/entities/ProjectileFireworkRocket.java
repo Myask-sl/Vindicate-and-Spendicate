@@ -14,7 +14,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 import invalid.myask.vindicateandspendicate.Config;
-import invalid.myask.vindicateandspendicate.api.CrossbowHelper;
+import invalid.myask.vindicateandspendicate.utils.VectorHelper;
 import invalid.myask.vindicateandspendicate.utils.FireworksExploder;
 
 public class ProjectileFireworkRocket extends EntityFireworkRocket implements IEntityAdditionalSpawnData {
@@ -36,7 +36,7 @@ public class ProjectileFireworkRocket extends EntityFireworkRocket implements IE
         this.shooter = user;
         this.shooterUUID = user.getPersistentID();
         Vec3 lookvec = user.getLookVec().normalize();
-        CrossbowHelper.setEntityVTimes(this, lookvec, Config.rocket_init_v_magnitude);
+        VectorHelper.setEntityVTimes(this, lookvec, Config.rocket_init_v_magnitude);
     }
 
     public ProjectileFireworkRocket(World world, EntityLivingBase user, EntityLivingBase target, ItemStack ammo) {
@@ -47,7 +47,7 @@ public class ProjectileFireworkRocket extends EntityFireworkRocket implements IE
             target.posY - user.posY + target.motionY * world.difficultySetting.ordinal(),
             target.posZ - user.posZ + target.motionZ * world.difficultySetting.ordinal());
         aimvec = aimvec.normalize();
-        CrossbowHelper.setEntityV(this, aimvec);
+        VectorHelper.setEntityV(this, aimvec);
     }
 
     @Override
