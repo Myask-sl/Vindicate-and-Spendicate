@@ -1,6 +1,7 @@
 package invalid.myask.vindicateandspendicate.enchantments;
 
 import invalid.myask.vindicateandspendicate.Config;
+import net.minecraft.enchantment.Enchantment;
 
 public class EnchantmentPiercing extends EnchantmentCrossbow {
 
@@ -17,5 +18,10 @@ public class EnchantmentPiercing extends EnchantmentCrossbow {
     @Override
     public int getMinEnchantability(int level) {
         return 1 + (level - 1) * 10;
+    }
+
+    @Override
+    public boolean canApplyTogether(Enchantment other) {
+        return !(other instanceof EnchantmentMultishot);
     }
 }
