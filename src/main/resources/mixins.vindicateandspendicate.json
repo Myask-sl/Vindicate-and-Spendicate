@@ -9,6 +9,7 @@
     "MixinEntityArrow_pierce",
     "MixinEntityArrow_xbowdamage",
     "MixinEntityFireworkRocket_shotrocket",
+    "MixinEntityLivingBase_multishotMultihit",
     "MixinEntitySkeleton_xbow_enchants",
     "MixinItemBow_xbow_enchants"
   ],
