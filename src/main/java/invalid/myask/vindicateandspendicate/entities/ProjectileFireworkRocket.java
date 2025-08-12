@@ -10,6 +10,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityFireworkRocket;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
@@ -35,8 +36,9 @@ public class ProjectileFireworkRocket extends EntityFireworkRocket implements IE
         super(world, user.posX, user.posY + user.getEyeHeight(), user.posZ, ammo);
         this.shooter = user;
         this.shooterUUID = user.getPersistentID();
-        Vec3 lookvec = user.getLookVec().normalize();
-        VectorHelper.setEntityVTimes(this, lookvec, Config.rocket_init_v_magnitude);
+        VectorHelper.setEntityVTimes(this, VectorHelper.createLookVec(user), Config.rocket_init_v_magnitude);
+        this.rotationPitch = user.rotationPitch;
+        this.rotationYaw = user.rotationYaw;
     }
 
     public ProjectileFireworkRocket(World world, EntityLivingBase user, EntityLivingBase target, ItemStack ammo) {
@@ -48,6 +50,9 @@ public class ProjectileFireworkRocket extends EntityFireworkRocket implements IE
             target.posZ - user.posZ + target.motionZ * world.difficultySetting.ordinal());
         aimvec = aimvec.normalize();
         VectorHelper.setEntityV(this, aimvec);
+        this.rotationYaw = (float) (Math.atan2(this.motionX, this.motionZ) *  (1 / VectorHelper.RADPERDEG));
+        double lateralComponent = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
+        this.rotationPitch = (float)(Math.atan2(this.motionY, (double)lateralComponent) * (1 / VectorHelper.RADPERDEG));
     }
 
     @Override

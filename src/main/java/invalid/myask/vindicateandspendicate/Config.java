@@ -31,6 +31,7 @@ public class Config {
 
     public static boolean creative_pregen_modern_redundant_fireworks_nbt = false;
     public static boolean creative_pregen_fireworks_extravagant = false;
+    public static boolean damage_per_multishot = false; //vanilla true
 
     public static void synchronizeConfiguration(File configFile) {
         Configuration configuration = new Configuration(configFile);

@@ -182,6 +182,11 @@ public class CrossbowHelper {
         out:
         for (int yawShots = -multishotX; yawShots <= multishotX; yawShots++) {
             for (int pitchShots = -multishotY; pitchShots <= multishotY; pitchShots++) {
+                if (Config.damage_per_multishot
+                    && (!(user instanceof EntityPlayer player) || !player.capabilities.isCreativeMode)) {
+                    if (launcher.getMaxDamage() - launcher.getItemDamage() <= 1) break out;
+                    launcher.attemptDamageItem(1, user.getRNG());
+                }
                 if (yawShots == 0 && pitchShots == 0) continue; // don't dupe original
                 newShot = EntityList.createEntityFromNBT(nbt, world);
                 if (newShot == null) break out;
