@@ -7,6 +7,8 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
+import org.joml.Vector3d;
+
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -150,17 +152,28 @@ public class CrossbowHelper {
         if (!world.isRemote) world.spawnEntityInWorld(shot);
     }
 
-
     public static void setEntityV(Entity newShot, Vec3 heading) {
         newShot.motionX = heading.xCoord;
         newShot.motionY = heading.yCoord;
         newShot.motionZ = heading.zCoord;
     }
 
+    public static void setEntityV(Entity newShot, Vector3d heading) {
+        newShot.motionX = heading.x;
+        newShot.motionY = heading.y;
+        newShot.motionZ = heading.z;
+    }
+
     public static void setEntityVTimes(Entity newShot, Vec3 heading, float scalar) {
         newShot.motionX = heading.xCoord * scalar;
         newShot.motionY = heading.yCoord * scalar;
         newShot.motionZ = heading.zCoord * scalar;
+    }
+
+    public static void setEntityVTimes(Entity newShot, Vector3d heading, float scalar) {
+        newShot.motionX = heading.x * scalar;
+        newShot.motionY = heading.y * scalar;
+        newShot.motionZ = heading.z * scalar;
     }
 
     public static void applyCrossbowEnchantsToShot(Entity shot, ItemStack launcher, World world, EntityLivingBase user) {
@@ -177,7 +190,18 @@ public class CrossbowHelper {
         originalShot.writeToNBTOptional(nbt);
         if (originalShot instanceof ProjectileFireworkRocket) nbt.setInteger("Life", nbt.getInteger("Life") + 1);
         Entity newShot = null;
-        Vec3 heading;
+        originalShot.prevRotationYaw = originalShot.rotationYaw;
+        originalShot.prevRotationPitch = originalShot.rotationPitch;
+        originalShot.rotationYaw -= 90;
+        originalShot.rotationPitch = 0;
+        Vec3 temp = originalShot.getLookVec();
+        Vector3d heading = new Vector3d(originalShot.motionX, originalShot.motionY, originalShot.motionZ),
+            sideAxis = new Vector3d(temp.xCoord, temp.yCoord, temp.zCoord), upAxis, newHeading;
+        originalShot.rotationYaw = originalShot.prevRotationYaw;
+        originalShot.rotationPitch = originalShot.prevRotationPitch - 90;
+        temp = originalShot.getLookVec();
+        originalShot.rotationPitch = originalShot.prevRotationPitch;
+        upAxis = new Vector3d(temp.xCoord, temp.yCoord, temp.zCoord);
         // TODO: give cluster UUID so they can combine damage
         out:
         for (int yawShots = -multishotX; yawShots <= multishotX; yawShots++) {
@@ -185,10 +209,9 @@ public class CrossbowHelper {
                 if (yawShots == 0 && pitchShots == 0) continue; // don't dupe original
                 newShot = EntityList.createEntityFromNBT(nbt, world);
                 if (newShot == null) break out;
-                heading = Vec3.createVectorHelper(newShot.motionX, newShot.motionY, newShot.motionZ);
-                heading.rotateAroundY((float) (Config.multishot_spread * yawShots));
-                heading.rotateAroundX((float) (Config.multishot_spread * pitchShots));
-                //FIXME: these aren't the right fns. rotate around player-local X,Y
+                heading.set(originalShot.motionX, originalShot.motionY, originalShot.motionZ);
+                heading.rotateAxis((float) (Config.multishot_spread * yawShots), upAxis.x, upAxis.y, upAxis.z);
+                heading.rotateAxis((float) (Config.multishot_spread * pitchShots), sideAxis.x, sideAxis.y, sideAxis.z);
 
                 setEntityV(newShot, heading);
                 if (newShot instanceof EntityArrow newArrow) {
