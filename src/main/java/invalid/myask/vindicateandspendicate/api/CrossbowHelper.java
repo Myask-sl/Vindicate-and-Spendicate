@@ -171,10 +171,12 @@ public class CrossbowHelper {
         originalShot.rotationYaw -= 90;
         originalShot.rotationPitch = 0;
         Vector3d heading = new Vector3d(originalShot.motionX, originalShot.motionY, originalShot.motionZ),
-            sideAxis = VectorHelper.createLookVec(originalShot), upAxis, newHeading;
+            sideAxis = VectorHelper.createLookVec(originalShot),
+            upAxis= new Vector3d(heading),
+            newSideAxis = new Vector3d(sideAxis);
+        upAxis.rotateAxis(-Math.PI / 2D, sideAxis.x, sideAxis.y, sideAxis.z);
+        upAxis.normalize(); sideAxis.normalize();
         originalShot.rotationYaw = originalShot.prevRotationYaw;
-        originalShot.rotationPitch = originalShot.prevRotationPitch - 90;
-        upAxis = VectorHelper.createLookVec(originalShot);
         originalShot.rotationPitch = originalShot.prevRotationPitch;
         // TODO: give cluster UUID so they can combine damage
         out:
@@ -184,8 +186,10 @@ public class CrossbowHelper {
                 newShot = EntityList.createEntityFromNBT(nbt, world);
                 if (newShot == null) break out;
                 heading.set(originalShot.motionX, originalShot.motionY, originalShot.motionZ);
-                heading.rotateAxis((float) (Config.multishot_spread * yawShots), upAxis.x, upAxis.y, upAxis.z);
-                heading.rotateAxis((float) (Config.multishot_spread * pitchShots), sideAxis.x, sideAxis.y, sideAxis.z);
+                heading.rotateAxis(Config.multishot_spread * yawShots, upAxis.x, upAxis.y, upAxis.z);
+                newSideAxis.set(sideAxis.x, sideAxis.y, sideAxis.z);
+                newSideAxis.rotateAxis(Config.multishot_spread * yawShots, upAxis.x, upAxis.y, upAxis.z);
+                heading.rotateAxis(Config.multishot_spread * pitchShots, newSideAxis.x, newSideAxis.y, newSideAxis.z);
 
                 VectorHelper.setEntityV(newShot, heading);
                 if (newShot instanceof EntityArrow newArrow) {
