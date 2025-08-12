@@ -18,8 +18,16 @@ public class VectorHelper {
         result.rotateY(entity.rotationYaw);
     }
 
-    public static Vec3 entityPosAsVec(Entity e) {
+    public static Vec3 entityPosAsVec3(Entity e) {
         return Vec3.createVectorHelper(e.posX, e.posY, e.posZ);
+    }
+
+    public static Vector3d createEntityPosAsVector3d(Entity e) {
+        return new Vector3d(e.posX, e.posY, e.posZ);
+    }
+
+    public static void assignEntityPosAsVector3d(Entity e, Vector3d target) {
+        target.set(e.posX, e.posY, e.posZ);
     }
 
     public static void setEntityV(Entity newShot, Vec3 heading) {
