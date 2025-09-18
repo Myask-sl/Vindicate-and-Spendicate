@@ -35,7 +35,9 @@ public class CommonProxy {
     public void postInit(FMLPostInitializationEvent event) {}
 
     // register server commands in this event handler (Remove if not needed)
-    public void serverStarting(FMLServerStartingEvent event) {}
+    public void serverStarting(FMLServerStartingEvent event) {
+        VindicateRules.registerRules(event.getServer().getEntityWorld().getWorldInfo().getGameRulesInstance());
+    }
 
     protected void registerLoads() {
         CrossbowHelper.registerLoad(Items.arrow, null);
