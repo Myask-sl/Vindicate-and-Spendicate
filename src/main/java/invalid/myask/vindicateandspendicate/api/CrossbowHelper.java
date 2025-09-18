@@ -34,6 +34,8 @@ import invalid.myask.vindicateandspendicate.entities.ProjectileFireworkRocket;
 import invalid.myask.vindicateandspendicate.items.ItemXBow;
 import invalid.myask.vindicateandspendicate.utils.VectorHelper;
 
+import static java.lang.Integer.max;
+
 public class CrossbowHelper {
 
     protected static Set<Item> crossbowLoads = new HashSet<>();
@@ -149,7 +151,7 @@ public class CrossbowHelper {
         } //else if (shot instanceof EntityFireworkRocket) {
         //    world.playSoundAtEntity(); //Firework plays its own.
         applyCrossbowEnchantsToShot(shot, launcher, world, user);
-        if (!world.isRemote) world.spawnEntityInWorld(shot);
+        if (!world.isRemote && !shot.isDead) world.spawnEntityInWorld(shot);
     }
 
     public static void applyCrossbowEnchantsToShot(Entity shot, ItemStack launcher, World world, EntityLivingBase user) {
@@ -159,9 +161,11 @@ public class CrossbowHelper {
     }
 
     public static void multiShoot(Entity originalShot, ItemStack launcher, World world, EntityLivingBase user) {
-        int multishotX = EnchantmentHelper.getEnchantmentLevel(Config.enchid_multishot, launcher),
-            multishotY = EnchantmentHelper.getEnchantmentLevel(Config.enchid_multishot_y, launcher);
-        if (multishotX + multishotY == 0) return;
+        int extraShotsX = getBaseXShots(launcher, user) + (EnchantmentHelper.getEnchantmentLevel(Config.enchid_multishot, launcher) * 2)
+                + EnchantmentHelper.getEnchantmentLevel(Config.enchid_dualshot, launcher) - 1,
+            extraShotsY = getBaseYShots(launcher, user) + (EnchantmentHelper.getEnchantmentLevel(Config.enchid_multishot_y, launcher) * 2)
+                + EnchantmentHelper.getEnchantmentLevel(Config.enchid_dualshot_y, launcher) - 1;
+        if (extraShotsX + extraShotsY <= 0) return;
         NBTTagCompound nbt = new NBTTagCompound();
         originalShot.writeToNBTOptional(nbt);
         if (originalShot instanceof ProjectileFireworkRocket) nbt.setInteger("Life", nbt.getInteger("Life") + 1);
@@ -178,10 +182,11 @@ public class CrossbowHelper {
         upAxis.normalize(); sideAxis.normalize();
         originalShot.rotationYaw = originalShot.prevRotationYaw;
         originalShot.rotationPitch = originalShot.prevRotationPitch;
+        double spread = Config.multishot_spread / 2;
         // TODO: give cluster UUID so they can combine damage
         out:
-        for (int yawShots = -multishotX; yawShots <= multishotX; yawShots++) {
-            for (int pitchShots = -multishotY; pitchShots <= multishotY; pitchShots++) {
+        for (int yawShots = -extraShotsX; yawShots <= extraShotsX; yawShots+= 2) {
+            for (int pitchShots = -extraShotsY; pitchShots <= extraShotsY; pitchShots+= 2) {
                 if (Config.damage_per_multishot
                     && (!(user instanceof EntityPlayer player) || !player.capabilities.isCreativeMode)) {
                     if (launcher.getMaxDamage() - launcher.getItemDamage() <= 1) break out;
@@ -191,10 +196,10 @@ public class CrossbowHelper {
                 newShot = EntityList.createEntityFromNBT(nbt, world);
                 if (newShot == null) break out;
                 heading.set(originalShot.motionX, originalShot.motionY, originalShot.motionZ);
-                heading.rotateAxis(Config.multishot_spread * yawShots, upAxis.x, upAxis.y, upAxis.z);
+                heading.rotateAxis(spread * yawShots, upAxis.x, upAxis.y, upAxis.z);
                 newSideAxis.set(sideAxis.x, sideAxis.y, sideAxis.z);
-                newSideAxis.rotateAxis(Config.multishot_spread * yawShots, upAxis.x, upAxis.y, upAxis.z);
-                heading.rotateAxis(Config.multishot_spread * pitchShots, newSideAxis.x, newSideAxis.y, newSideAxis.z);
+                newSideAxis.rotateAxis(spread * yawShots, upAxis.x, upAxis.y, upAxis.z);
+                heading.rotateAxis(spread * pitchShots, newSideAxis.x, newSideAxis.y, newSideAxis.z);
 
                 VectorHelper.setEntityV(newShot, heading);
                 if (newShot instanceof EntityArrow newArrow) {
@@ -206,6 +211,21 @@ public class CrossbowHelper {
             }
         }
         if (newShot == null) VindicateAndSpendicate.LOG.warn("WARNING, Multishot could not copy projectile {}!", originalShot.toString());
+        if ((extraShotsX % 2) + (extraShotsY % 2) < 2) originalShot.setDead(); //if even width or height, no central projectile
+    }
+
+    public static int getBaseXShots(ItemStack launcher, EntityLivingBase user) {
+        if (launcher.getItem() != null && launcher.getItem() instanceof ItemXBow xbow
+            && launcher.getTagCompound() != null && launcher.getTagCompound().hasKey("baseXShots"))
+            return max(0, launcher.getTagCompound().getInteger("baseXShots"));
+        return 1;
+    }
+
+    public static int getBaseYShots(ItemStack launcher, EntityLivingBase user) {
+        if (launcher.getItem() != null && launcher.getItem() instanceof ItemXBow xbow
+            && launcher.getTagCompound() != null && launcher.getTagCompound().hasKey("baseYShots"))
+            return max(0, launcher.getTagCompound().getInteger("baseYShots"));
+        return 1;
     }
 
     public static void undoBounce(Entity shot, MovingObjectPosition movingObjectPosition) {

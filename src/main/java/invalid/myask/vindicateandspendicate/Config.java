@@ -10,18 +10,22 @@ public class Config {
     public static int enchid_multishot = 68;
     public static int enchid_piercing = 69;
     public static int enchid_multishot_y = 70;
+    public static int enchid_dualshot = 71;
+    public static int enchid_dualshot_y = 72;
 
     public static int max_level_piercing = 4;
     public static int max_level_quickcharge = 3;
     public static int max_level_multishot = 1;
+    public static int max_level_dualshot = 1;
 
     public static int crossbow_base_charge_ticks = 25;
     public static int ticks_per_quickcharge = 5;
 
     public static boolean craftable_crossbow = true;
     public static boolean crossbow_enchants_enable = true;
-    public static boolean random_crossbow_damage = true; // Javalike
     public static boolean multishot_y_enable = true;
+    public static boolean dualshot_enable = true; //vanillafalse
+    public static boolean random_crossbow_damage = true; // Javalike
     public static double multishot_spread = Math.PI / 18;
     public static boolean addToVanillaTabs = false;
     public static boolean fireworks_impact_fuse = true; //like Java

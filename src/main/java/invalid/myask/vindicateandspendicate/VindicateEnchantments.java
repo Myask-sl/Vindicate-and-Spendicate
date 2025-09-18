@@ -6,7 +6,7 @@ import invalid.myask.vindicateandspendicate.enchantments.*;
 
 public class VindicateEnchantments {
 
-    public static Enchantment MULTISHOT, MULTISHOT_Y, PIERCING, QUICK_CHARGE;
+    public static Enchantment MULTISHOT, MULTISHOT_Y, PIERCING, QUICK_CHARGE, DUALSHOT, DUALSHOT_Y;
 
     public static void register() {
         if (Config.crossbow_enchants_enable) {
@@ -17,6 +17,13 @@ public class VindicateEnchantments {
             }
             PIERCING = new EnchantmentPiercing(Config.enchid_piercing, 10);
             QUICK_CHARGE = new EnchantmentQuickCharge(Config.enchid_quickcharge, 5);
+            if (Config.dualshot_enable) {
+                DUALSHOT = new EnchantmentDualshot(Config.enchid_dualshot, 1);
+                if (Config.multishot_y_enable) {
+                    DUALSHOT_Y = new EnchantmentDualshot(Config.enchid_dualshot_y, 1);
+                    DUALSHOT_Y.setName("xbow.dualshot.y");
+                }
+            }
         }
     }
 }
