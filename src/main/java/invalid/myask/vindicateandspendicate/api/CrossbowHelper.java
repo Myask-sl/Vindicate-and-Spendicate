@@ -211,7 +211,11 @@ public class CrossbowHelper {
             }
         }
         if (newShot == null) VindicateAndSpendicate.LOG.warn("WARNING, Multishot could not copy projectile {}!", originalShot.toString());
-        if ((extraShotsX % 2) + (extraShotsY % 2) < 2) originalShot.setDead(); //if even width or height, no central projectile
+        if ((extraShotsX % 2) == 1 || (extraShotsY % 2) == 1) {
+            originalShot.setDead(); //if even width or height, no central projectile
+            if (newShot instanceof EntityArrow newArrow &&
+                originalShot instanceof EntityArrow oldArrow) newArrow.canBePickedUp = oldArrow.canBePickedUp; //still leave one obtainable
+        }
     }
 
     public static int getBaseXShots(ItemStack launcher, EntityLivingBase user) {
