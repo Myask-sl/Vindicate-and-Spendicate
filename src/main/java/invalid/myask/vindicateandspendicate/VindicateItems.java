@@ -21,7 +21,7 @@ public class VindicateItems {
     public static ItemXBow XBOW;
 
     public static void register() {
-        if (!Config.addToVanillaTabs) TAB = new CreativeTabs("takesAnIllage") {
+        if (!Config.addToVanillaTabs) TAB = new CreativeTabs("vindicateandspendicate") {
             @Override
             public Item getTabIconItem() {
                 return XBOW;
