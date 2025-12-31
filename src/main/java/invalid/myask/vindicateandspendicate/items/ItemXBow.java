@@ -18,7 +18,7 @@ import invalid.myask.vindicateandspendicate.Config;
 import invalid.myask.vindicateandspendicate.VindicateAndSpendicate;
 import invalid.myask.vindicateandspendicate.api.CrossbowHelper;
 
-public class ItemXBow extends Item {
+public class ItemXBow extends VindicItem {
 
     public IIcon[] iconCocked;
     public static IIcon iconArrow, iconSpectralArrow, iconTippedArrow, iconRocket, iconBlank;

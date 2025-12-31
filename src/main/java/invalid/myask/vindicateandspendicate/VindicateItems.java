@@ -3,6 +3,7 @@ package invalid.myask.vindicateandspendicate;
 import java.util.List;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import invalid.myask.vindicateandspendicate.items.VindicUCItem;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
@@ -12,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
+import invalid.myask.vindicateandspendicate.items.VindicItem;
 import invalid.myask.vindicateandspendicate.items.ItemXBow;
 
 public class VindicateItems {
@@ -20,7 +22,7 @@ public class VindicateItems {
 
     public static ItemXBow XBOW;
 
-    public static Item TOTEM_DYING = new Item().setUnlocalizedName("totem_dying").setTextureName("totem_dying");
+    public static Item TOTEM_DYING = new VindicUCItem().setNames("totem_dying");
 
     public static void register() {
         if (!Config.addToVanillaTabs) TAB = new CreativeTabs("vindicateandspendicate") {
@@ -78,8 +80,7 @@ public class VindicateItems {
         };
 
         XBOW = new ItemXBow();
-        XBOW.setUnlocalizedName("crossbow")
-            .setTextureName(VindicateAndSpendicate.MODID + ":crossbow");
+        XBOW.setNames("crossbow");
         registerAnItem(XBOW, CreativeTabs.tabCombat);
         registerAnItem(TOTEM_DYING, CreativeTabs.tabMisc);
     }
