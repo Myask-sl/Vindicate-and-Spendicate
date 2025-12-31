@@ -1,5 +1,6 @@
 itemGroup.vindicateandspendicate=Vindicate and Spendicate
 item.crossbow.name=Crossbow
+item.totem_dying.name=Totem of Dying
 
 death.attack.fireworks=%1$s went off with a bang
 death.attack.shotfireworks=%1$s experienced %2$s's fireworks display finally

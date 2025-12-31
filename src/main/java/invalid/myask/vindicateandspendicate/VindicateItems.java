@@ -20,6 +20,8 @@ public class VindicateItems {
 
     public static ItemXBow XBOW;
 
+    public static Item TOTEM_DYING = new Item().setUnlocalizedName("totem_dying").setTextureName("totem_dying");
+
     public static void register() {
         if (!Config.addToVanillaTabs) TAB = new CreativeTabs("vindicateandspendicate") {
             @Override
@@ -79,10 +81,12 @@ public class VindicateItems {
         XBOW.setUnlocalizedName("crossbow")
             .setTextureName(VindicateAndSpendicate.MODID + ":crossbow");
         registerAnItem(XBOW, CreativeTabs.tabCombat);
+        registerAnItem(TOTEM_DYING, CreativeTabs.tabMisc);
     }
 
     static void registerAnItem(Item item, CreativeTabs vanillaTab) {
         GameRegistry.registerItem(item, item.getUnlocalizedName().substring(5), VindicateAndSpendicate.MODID);
+        //substring(5) trims off the "item." that it adds
         if (Config.addToVanillaTabs) item.setCreativeTab(vanillaTab);
         else item.setCreativeTab(TAB);
     }
