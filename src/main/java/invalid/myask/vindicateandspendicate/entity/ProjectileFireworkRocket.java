@@ -1,4 +1,4 @@
-package invalid.myask.vindicateandspendicate.entities;
+package invalid.myask.vindicateandspendicate.entity;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,8 +15,8 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 import invalid.myask.vindicateandspendicate.Config;
-import invalid.myask.vindicateandspendicate.utils.VectorHelper;
-import invalid.myask.vindicateandspendicate.utils.FireworksExploder;
+import invalid.myask.vindicateandspendicate.util.VectorHelper;
+import invalid.myask.vindicateandspendicate.util.FireworksExploder;
 
 public class ProjectileFireworkRocket extends EntityFireworkRocket implements IEntityAdditionalSpawnData {
 

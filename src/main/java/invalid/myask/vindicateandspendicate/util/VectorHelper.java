@@ -1,4 +1,4 @@
-package invalid.myask.vindicateandspendicate.utils;
+package invalid.myask.vindicateandspendicate.util;
 
 import org.joml.Vector3d;
 

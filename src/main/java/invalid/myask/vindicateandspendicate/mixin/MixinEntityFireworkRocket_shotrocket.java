@@ -1,7 +1,7 @@
-package invalid.myask.vindicateandspendicate.mixins;
+package invalid.myask.vindicateandspendicate.mixin;
 
 import invalid.myask.vindicateandspendicate.api.IBlowUp;
-import invalid.myask.vindicateandspendicate.utils.FireworksExploder;
+import invalid.myask.vindicateandspendicate.util.FireworksExploder;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityFireworkRocket;
 import net.minecraft.world.World;

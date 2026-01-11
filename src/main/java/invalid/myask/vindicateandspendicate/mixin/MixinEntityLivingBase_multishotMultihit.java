@@ -1,4 +1,4 @@
-package invalid.myask.vindicateandspendicate.mixins;
+package invalid.myask.vindicateandspendicate.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import invalid.myask.vindicateandspendicate.Config;

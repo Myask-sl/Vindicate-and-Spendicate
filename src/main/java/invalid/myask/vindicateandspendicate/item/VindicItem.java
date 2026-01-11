@@ -1,4 +1,4 @@
-package invalid.myask.vindicateandspendicate.items;
+package invalid.myask.vindicateandspendicate.item;
 
 import invalid.myask.vindicateandspendicate.VindicateAndSpendicate;
 import net.minecraft.item.Item;

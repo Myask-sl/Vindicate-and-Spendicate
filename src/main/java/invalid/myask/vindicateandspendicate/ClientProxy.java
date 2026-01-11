@@ -6,7 +6,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 
 import invalid.myask.vindicateandspendicate.api.CrossbowHelper;
-import invalid.myask.vindicateandspendicate.items.ItemXBow;
+import invalid.myask.vindicateandspendicate.item.ItemXBow;
 
 public class ClientProxy extends CommonProxy {
 

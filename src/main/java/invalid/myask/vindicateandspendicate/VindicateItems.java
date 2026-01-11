@@ -3,7 +3,7 @@ package invalid.myask.vindicateandspendicate;
 import java.util.List;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import invalid.myask.vindicateandspendicate.items.VindicUCItem;
+import invalid.myask.vindicateandspendicate.item.VindicUCItem;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
@@ -13,8 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
-import invalid.myask.vindicateandspendicate.items.VindicItem;
-import invalid.myask.vindicateandspendicate.items.ItemXBow;
+import invalid.myask.vindicateandspendicate.item.ItemXBow;
 
 public class VindicateItems {
 

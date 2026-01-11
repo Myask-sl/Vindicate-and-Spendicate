@@ -1,4 +1,4 @@
-package invalid.myask.vindicateandspendicate.items;
+package invalid.myask.vindicateandspendicate.item;
 
 import cpw.mods.fml.common.Loader;
 import net.minecraft.client.renderer.texture.IIconRegister;

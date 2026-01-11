@@ -1,4 +1,4 @@
-package invalid.myask.vindicateandspendicate.items;
+package invalid.myask.vindicateandspendicate.item;
 
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;

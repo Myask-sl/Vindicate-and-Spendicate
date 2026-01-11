@@ -1,4 +1,4 @@
-package invalid.myask.vindicateandspendicate.mixins;
+package invalid.myask.vindicateandspendicate.mixin;
 
 import invalid.myask.vindicateandspendicate.api.IXbowArrow;
 import net.minecraft.entity.projectile.EntityArrow;

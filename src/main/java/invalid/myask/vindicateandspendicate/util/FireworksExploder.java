@@ -1,4 +1,4 @@
-package invalid.myask.vindicateandspendicate.utils;
+package invalid.myask.vindicateandspendicate.util;
 
 import java.util.List;
 
@@ -11,8 +11,7 @@ import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
 import net.minecraft.util.MovingObjectPosition;
 
-import invalid.myask.vindicateandspendicate.api.CrossbowHelper;
-import invalid.myask.vindicateandspendicate.entities.ProjectileFireworkRocket;
+import invalid.myask.vindicateandspendicate.entity.ProjectileFireworkRocket;
 
 public class FireworksExploder {
     public static void explodeForDamageMaybe(Entity firework, ItemStack rocket) {

@@ -30,9 +30,9 @@ import invalid.myask.vindicateandspendicate.VindicateAndSpendicate;
 import invalid.myask.vindicateandspendicate.Config;
 import invalid.myask.vindicateandspendicate.compat.BackhandWrapper;
 import invalid.myask.vindicateandspendicate.compat.EtFuturumWrappium;
-import invalid.myask.vindicateandspendicate.entities.ProjectileFireworkRocket;
-import invalid.myask.vindicateandspendicate.items.ItemXBow;
-import invalid.myask.vindicateandspendicate.utils.VectorHelper;
+import invalid.myask.vindicateandspendicate.entity.ProjectileFireworkRocket;
+import invalid.myask.vindicateandspendicate.item.ItemXBow;
+import invalid.myask.vindicateandspendicate.util.VectorHelper;
 
 import static java.lang.Integer.max;
 
