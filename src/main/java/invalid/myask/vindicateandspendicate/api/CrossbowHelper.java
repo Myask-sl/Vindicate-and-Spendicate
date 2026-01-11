@@ -135,7 +135,7 @@ public class CrossbowHelper {
             else shotArrow.setDamage(9);
             boolean pickup = true;
             if (!(user instanceof EntityPlayer)) {
-                shotArrow.setDamage(((EntityArrow) shot).getDamage() * .46);
+                shotArrow.setDamage(((EntityArrow) shot).getDamage() * .46); //for pillagers, etc.
                 if (shotArrow.getClass() == EntityArrow.class) pickup = false;
             }
             shotArrow.setDamage(EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, launcher) * 2
@@ -242,5 +242,25 @@ public class CrossbowHelper {
         shot.motionZ /= -0.10000000149011612D;
         shot.prevRotationYaw -= 180;
         shot.rotationYaw -= 180;
+    }
+
+    public static boolean isLoaded(ItemStack stack) {
+        if (stack == null || !(stack.getItem() instanceof ItemXBow))
+            return false;
+        NBTTagCompound nbt = stack.getTagCompound();
+        if (nbt == null || !nbt.hasKey("charged_projectile"))
+            return false;
+        NBTTagList loadList = nbt.getTagList("charged_projectile", 10);
+        for (int i = 0; i < loadList.tagCount(); i++){
+            nbt = loadList.getCompoundTagAt(i);
+            if (nbt != null && nbt.getInteger("Count") > 0) return true;
+        }
+        return false;
+    }
+
+    public static boolean isUnloaded(ItemStack heldItem) {
+        if (heldItem == null || !(heldItem.getItem() instanceof ItemXBow))
+            return false;
+        else return !isLoaded(heldItem);
     }
 }

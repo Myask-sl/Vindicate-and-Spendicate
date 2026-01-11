@@ -33,17 +33,6 @@ public class ItemXBow extends VindicItem {
         if (getMaxItemUseDuration(stack) - count == pullTime(stack)) {
             int slot = CrossbowHelper.findProjectile(user.inventory);
             if (slot != -1) {
-                NBTTagCompound nbt = stack.getTagCompound();
-                if (nbt == null) {
-                    nbt = new NBTTagCompound();
-                    stack.setTagCompound(nbt);
-                }
-                NBTTagList projlist;
-                if (nbt.hasKey("charged_projectile")) projlist = nbt.getTagList("charged_projectile", 10);
-                else {
-                    projlist = new NBTTagList();
-                    nbt.setTag("charged_projectile", projlist);
-                }
                 ItemStack ammoSource = user.inventory.getStackInSlot(slot);
                 if (user.capabilities.isCreativeMode
                     || EnchantmentHelper.getEnchantmentLevel(EnchantmentArrowInfinite.infinity.effectId, stack) > 0) {
@@ -52,9 +41,24 @@ public class ItemXBow extends VindicItem {
                 } else ammoSource = ammoSource.splitStack(1);
                 //TODO: charge SFX?
 
-                projlist.appendTag(ammoSource.writeToNBT(new NBTTagCompound()));
+                loadWith(stack, ammoSource);
             }
         }
+    }
+
+    public void loadWith(ItemStack stack, ItemStack ammo) {
+        NBTTagCompound nbt = stack.getTagCompound();
+        if (nbt == null) {
+            nbt = new NBTTagCompound();
+            stack.setTagCompound(nbt);
+        }
+        NBTTagList projlist;
+        if (nbt.hasKey("charged_projectile")) projlist = nbt.getTagList("charged_projectile", 10);
+        else {
+            projlist = new NBTTagList();
+            nbt.setTag("charged_projectile", projlist);
+        }
+        projlist.appendTag(ammo.writeToNBT(new NBTTagCompound()));
     }
 
     public int percentPulled(ItemStack stack, EntityPlayer player, boolean using, int useRemaining) {
@@ -66,7 +70,8 @@ public class ItemXBow extends VindicItem {
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer user) {
-        if (getLoad(stack) >= 0 && user.getItemInUseDuration() == 0) { //loaded
+        if ( // TODO !Config.advancedCrossbowControl &&
+            getLoad(stack) >= 0 && user.getItemInUseDuration() == 0) { //loaded
             CrossbowHelper.launchProjectile(stack, world, user, null);
             return (!user.capabilities.isCreativeMode && stack.attemptDamageItem(1, user.getRNG()) ? null : stack);
         }

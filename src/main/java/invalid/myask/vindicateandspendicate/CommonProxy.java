@@ -6,10 +6,12 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
+import invalid.myask.vindicateandspendicate.event.Scheduillager;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 
 import invalid.myask.vindicateandspendicate.api.CrossbowHelper;
+import net.minecraftforge.common.MinecraftForge;
 
 public class CommonProxy {
 
@@ -23,6 +25,8 @@ public class CommonProxy {
         VindicateItems.register();
         VindicateEnchantments.register();
         VindicateEntities.register();
+
+        MinecraftForge.EVENT_BUS.register(Scheduillager.instance);
     }
 
     // load "Do your mod setup. Build whatever data structures you care about. Register recipes." (Remove if not needed)

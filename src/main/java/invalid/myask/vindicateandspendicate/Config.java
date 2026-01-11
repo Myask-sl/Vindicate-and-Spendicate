@@ -31,11 +31,29 @@ public class Config {
     public static boolean fireworks_impact_fuse = true; //like Java
     public static float rocket_init_v_magnitude = 0.75F;
 
-    public static boolean permit_multishot_damage_same = true; //TODO not in yet. Vanilla hasn't fixed.
+    public static boolean permit_multishot_damage_same = true; //TODO not in yet. Vanilla hasn't done it.
 
     public static boolean creative_pregen_modern_redundant_fireworks_nbt = false;
     public static boolean creative_pregen_fireworks_extravagant = false;
-    public static boolean damage_per_multishot = false; //vanilla true
+    public static boolean damage_per_multishot = false; //damage launcher per multishot: vanilla true
+
+    public static long wandering_trader_init = 24000;
+    public static long wandering_trader_period = 24000;
+    public static long wandering_trader_variance = 0;
+    public static float wandering_trader_chance_base = 0.25F;
+    public static float wandering_trader_chance_bonus = 0.25F;
+    public static int wandering_trader_bonus_multiplier_cap = 2;
+
+    public static long patrol_init = 132000;
+    public static long patrol_period = 12000;
+    public static long patrol_variance = 1200;
+    public static int patrol_bonus_multiplier_cap = 0;
+    public static float patrol_chance_base = 0.2F;
+    public static float patrol_chance_bonus = 0.2F;
+    public static int patrol_min_followers = 0; //Bedrock 1
+    public static int patrol_max_followers = 5;
+
+    public static double vindicator_base_damage = 5; //Bedrock 8
 
     public static void synchronizeConfiguration(File configFile) {
         Configuration configuration = new Configuration(configFile);
