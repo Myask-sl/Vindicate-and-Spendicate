@@ -1,7 +1,6 @@
 package invalid.myask.vindicateandspendicate.compat;
 
-import ganymedes01.etfuturum.ModItems;
-import ganymedes01.etfuturum.entities.EntityTippedArrow;
+import cpw.mods.fml.common.Loader;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityArrow;
@@ -10,37 +9,49 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class EtFuturumWrappium {
+    public static EtFuturumWrappium instance;
+    static {
+        if (Loader.isModLoaded("etfuturum"))
+            instance = new EtFuturumLoaded();
+        else instance = new EtFuturumWrappium();
+    }
 
-    public static int getFuturumLoadium(Item loadItem) {
-
-        if (loadItem == ModItems.TIPPED_ARROW.get()) return 2;
-        // if (loadItem == ModItems.SPECTRAL_ARROW.get()) return 1; //uh...not there yet?
+    public int getFuturumLoadium(Item loadItem) {
         return -1;
     }
 
-    public static Entity fletchTippedArrow(World world, EntityLivingBase user, ItemStack ammo) {
-        EntityTippedArrow shot = new EntityTippedArrow(world, user, 2);
-        shot.setArrow(ammo);
-        return shot;
+    protected Entity fletchArrow(World world, EntityLivingBase user, ItemStack ammo) {
+        return new EntityArrow(world, user, 2);
     }
 
-    public static Entity fletchTippedArrow(World world, EntityLivingBase user, EntityLivingBase target, ItemStack ammo) {
-        EntityTippedArrow shot = new EntityTippedArrow(world, user, target, 1.6F,
+    protected Entity fletchArrow(World world, EntityLivingBase user, EntityLivingBase target, ItemStack ammo) {
+        return new EntityArrow(world, user, target, 1.6F,
             (float) (14 - world.difficultySetting.getDifficultyId() * 4));
-        shot.setArrow(ammo);
-        return shot;
     }
 
-    public static Entity fletchSpectralArrow(World world, EntityLivingBase user, ItemStack ammo) {
-        EntityArrow shot = new EntityArrow(world, user, 2); //TODO: when spectral arrows exist...replace
-        //shot.setArrow(ammo);
-        return shot;
+    public Entity fletchTippedArrow (World world, EntityLivingBase user, ItemStack ammo) {
+        return fletchArrow(world, user, ammo);
     }
 
-    public static Entity fletchSpectralArrow(World world, EntityLivingBase user, EntityLivingBase target, ItemStack ammo) {
-        EntityArrow shot = new EntityArrow(world, user, target, 1.6F, //TODO: when spectral arrows exist...replace
-            (float) (14 - world.difficultySetting.getDifficultyId() * 4));
-        //shot.setArrow(ammo);
-        return shot;
+    public Entity fletchTippedArrow (World world, EntityLivingBase user, EntityLivingBase target, ItemStack ammo) {
+        return fletchArrow(world, user,  target, ammo);
+    }
+
+    public Entity fletchSpectralArrow (World world, EntityLivingBase user, ItemStack ammo){
+        return fletchArrow(world, user, ammo);
+    }
+
+    public Entity fletchSpectralArrow (World world, EntityLivingBase user, EntityLivingBase target, ItemStack ammo) {
+        return fletchArrow(world, user, target, ammo);
+    }
+
+    public boolean isEFRBanner(Item item) {
+        return false;
+    }
+    public boolean isEFRBanner(ItemStack stack) {
+        return stack != null && isEFRBanner(stack.getItem());
+    }
+    public boolean isEFROminousBanner(ItemStack stack) {
+        return false;
     }
 }

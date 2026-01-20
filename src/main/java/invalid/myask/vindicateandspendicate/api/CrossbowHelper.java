@@ -112,17 +112,17 @@ public class CrossbowHelper {
         if (target == null) { // probably player
             switch (result) {
                 case "tipped_arrow", "etfuturum.tipped_arrow" -> {
-                    shot = EtFuturumWrappium.fletchTippedArrow(world, user, ammo);
+                    shot = EtFuturumWrappium.instance.fletchTippedArrow(world, user, ammo);
                 }
                 case "spectral_arrow", "etfuturum.spectral_arrow" ->
-                    shot = EtFuturumWrappium.fletchSpectralArrow(world, user, ammo);
+                    shot = EtFuturumWrappium.instance.fletchSpectralArrow(world, user, ammo);
                 case "fireworks" -> shot = new ProjectileFireworkRocket(world, user, ammo);
                 default -> shot = new EntityArrow(world, user, 2);
             }
         } else {
             switch (result) {
-                case "tipped_arrow" -> shot =  EtFuturumWrappium.fletchTippedArrow(world, user, target, ammo);
-                case "spectral_arrow" -> shot = EtFuturumWrappium.fletchSpectralArrow(world, user, target, ammo);
+                case "tipped_arrow" -> shot =  EtFuturumWrappium.instance.fletchTippedArrow(world, user, target, ammo);
+                case "spectral_arrow" -> shot = EtFuturumWrappium.instance.fletchSpectralArrow(world, user, target, ammo);
                 case "fireworks" -> shot = new ProjectileFireworkRocket(world, user, target, ammo);
                 default -> // "arrow".equals
                     shot = new EntityArrow(world, user, target, 1.6F,

@@ -104,7 +104,7 @@ public class ItemXBow extends VindicItem {
                     if (loadItem == Items.arrow) return 0;
                     if (loadItem == Items.fireworks) return 3;
                     if (loadItem != null && Loader.isModLoaded("etfuturum")) {
-                        int check = EtFuturumWrappium.getFuturumLoadium(loadItem);
+                        int check = EtFuturumWrappium.instance.getFuturumLoadium(loadItem);
                         if (check != -1) return check;
                     }
                 }
