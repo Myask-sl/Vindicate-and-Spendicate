@@ -231,7 +231,13 @@ public class EntityPillager extends EntityMob implements IEntityOwnable, IRanged
     @Override
     protected void dropEquipment(boolean playerKilled, int fortuneRanks) {
         super.dropEquipment(playerKilled, fortuneRanks);
-        if (amCaptain && Config.omens_in_bottles) entityDropItem(new ItemStack(VindicateItems.OMEN_BOTTLE), 0);
+        if (amCaptain && Config.omens_in_bottles) {
+            ItemStack bottle = new ItemStack(VindicateItems.OMEN_BOTTLE);
+            NBTTagCompound nbt = new NBTTagCompound();
+            nbt.setInteger("ominous_bottle_amplifier", rand.nextInt(5));
+            bottle.setTagCompound(nbt);
+            entityDropItem(bottle, 0);
+        }
     }
 
     @Override
