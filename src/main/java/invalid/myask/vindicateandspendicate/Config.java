@@ -23,8 +23,8 @@ public class Config {
 
     public static boolean craftable_crossbow = true;
     public static boolean crossbow_enchants_enable = true;
-    public static boolean multishot_y_enable = true;
-    public static boolean dualshot_enable = true; //vanillafalse
+    public static boolean multishot_y_enable = true; //vanilla false
+    public static boolean dualshot_enable = true; //vanilla false
     public static boolean random_crossbow_damage = true; // Javalike
     public static double multishot_spread = Math.PI / 18;
     public static boolean addToVanillaTabs = false;
@@ -54,6 +54,9 @@ public class Config {
     public static int patrol_max_followers = 5;
 
     public static double vindicator_base_damage = 5; //Bedrock 8
+    public static boolean vindicator_johnny_persists = true; //Bedrock false: renaming a Johnny won't de-crazy 'em
+
+    public static boolean omens_in_bottles = false;
 
     public static void synchronizeConfiguration(File configFile) {
         Configuration configuration = new Configuration(configFile);

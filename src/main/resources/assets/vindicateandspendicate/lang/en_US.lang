@@ -12,3 +12,6 @@ enchantment.xbow.multishot=Multishot
 enchantment.xbow.multishot.y=VertiMultishot
 enchantment.xbow.dualshot=Dualshot
 enchantment.xbow.dualshot.y=Shot-over-shot
+
+entity.vindicateandspendicate.Pillager.name=Pillager
+entity.vindicateandspendicate.Vindicator.name=Vindicator

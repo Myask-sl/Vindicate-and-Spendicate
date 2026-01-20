@@ -9,6 +9,7 @@ import net.minecraft.entity.ai.EntityAITarget;
 public class EntityAITargetLeadersTarget extends EntityAITarget {
     public EntityAITargetLeadersTarget(EntityCreature thinker, boolean checkSight, boolean nearbyOnly) {
         super(thinker, checkSight, nearbyOnly);
+        if (!(thinker instanceof IEntityOwnable)) throw new IllegalArgumentException("Non-follower tried to add EntityAITargetLeadersTarget task!");
     }
 
     @Override

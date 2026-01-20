@@ -21,7 +21,9 @@ public class VindicateItems {
 
     public static ItemXBow XBOW;
 
-    public static Item TOTEM_DYING = new VindicUCItem().setNames("totem_dying");
+    public static final Item TOTEM_DYING = new VindicUCItem().setNames("totem_dying");
+    public static final Item OMEN_BOTTLE = new VindicUCItem().setNames("ominous_bottle");
+
 
     public static void register() {
         if (!Config.addToVanillaTabs) TAB = new CreativeTabs("vindicateandspendicate") {
@@ -82,6 +84,7 @@ public class VindicateItems {
         XBOW.setNames("crossbow");
         registerAnItem(XBOW, CreativeTabs.tabCombat);
         registerAnItem(TOTEM_DYING, CreativeTabs.tabMisc);
+        registerAnItem(OMEN_BOTTLE, CreativeTabs.tabMisc);
     }
 
     static void registerAnItem(Item item, CreativeTabs vanillaTab) {

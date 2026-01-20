@@ -1,15 +1,26 @@
 package invalid.myask.vindicateandspendicate.entity.illager;
 
 import invalid.myask.vindicateandspendicate.Config;
-import invalid.myask.vindicateandspendicate.VindicateItems;
+import invalid.myask.vindicateandspendicate.entity.ai.EntityAIGoCrazy;
+import invalid.myask.vindicateandspendicate.item.ItemXBow;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 public class EntityVindicator extends EntityPillager {
+    protected boolean wearingTux, amJohnny, existentialCrisisCheck;
+
     public EntityVindicator(World world) {
         super(world);
+        wearingTux = (rand.nextFloat() < 0.05);
+        amJohnny = false;
+        existentialCrisisCheck = false;
+        tasks.addTask(1, new EntityAIGoCrazy(this));
     }
 
     @Override
@@ -20,13 +31,66 @@ public class EntityVindicator extends EntityPillager {
     }
 
     @Override
-    protected void addRandomArmor() {
-        super.addRandomArmor();
+    protected void setRandomWeapon() {
         setCurrentItemOrArmor(0, new ItemStack(Items.iron_axe));
     }
 
     @Override
     public boolean isSprinting() {
-        return true;
+        return !crossbowWielding;
+    }
+
+    @Override
+    public void writeEntityToNBT(NBTTagCompound tagCompound) {
+        super.writeEntityToNBT(tagCompound);
+        if (wearingTux) tagCompound.setBoolean("vindicatorTuxedo", true); //don't waste space on normal case
+        if (amJohnny) tagCompound.setBoolean("Johnny", true);
+    }
+
+    @Override
+    public void readEntityFromNBT(NBTTagCompound tagCompound) {
+        super.readEntityFromNBT(tagCompound);
+        wearingTux = tagCompound.getBoolean("vindicatorTuxedo"); //not-present = false;
+        amJohnny = tagCompound.getBoolean("Johnny");
+    }
+
+    public boolean isWearingTux () {
+        return wearingTux;
+    }
+
+    public boolean isJohnnyHere () {
+        return amJohnny;
+    }
+
+    @Override
+    protected boolean interact(EntityPlayer alex) {
+        ItemStack equippedItem = alex.getCurrentEquippedItem();
+        if (equippedItem != null)
+            existentialCrisisCheck = equippedItem.getItem() == Items.name_tag; //Vindicator will remember this
+        return super.interact(alex);
+    }
+
+    @Override
+    protected void updateAITasks() {
+        if (existentialCrisisCheck) {
+            amJohnny = (amJohnny && Config.vindicator_johnny_persists)
+                || (hasCustomNameTag() && "Johnny".equals(getCustomNameTag()));
+            existentialCrisisCheck = false;
+        }
+        super.updateAITasks();
+    }
+
+    @Override
+    public int preferNewItem(int slot, Item oldItem, Item newItem) {
+        if (slot == 0) {
+            if (oldItem instanceof ItemAxe) {
+                return (newItem instanceof ItemAxe) ? 0 : -1;
+            } else {
+                return (newItem instanceof ItemXBow) || (newItem instanceof ItemAxe) ? 1 : 0;
+            }
+        } else if (slot == 4) {
+            return super.preferNewItem(slot, oldItem, newItem);
+        }
+        return 0;
     }
 }
