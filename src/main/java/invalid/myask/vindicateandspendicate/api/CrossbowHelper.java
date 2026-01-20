@@ -155,8 +155,10 @@ public class CrossbowHelper {
     }
 
     public static void applyCrossbowEnchantsToShot(Entity shot, ItemStack launcher, World world, EntityLivingBase user) {
-        if (shot instanceof IPierceArrow modArrow) modArrow
-            .vindicateAndSpendicate$setPierces(EnchantmentHelper.getEnchantmentLevel(Config.enchid_piercing, launcher));
+        if (shot instanceof IPierceArrow modArrow) {
+            modArrow.vindicateAndSpendicate$setPierces(EnchantmentHelper.getEnchantmentLevel(Config.enchid_piercing, launcher));
+            modArrow.vindicateAndSpendicate$setShotGroupUUID(user.getPersistentID());
+        }
         CrossbowHelper.multiShoot(shot, launcher, world, user);
     }
 
