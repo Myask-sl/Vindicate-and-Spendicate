@@ -6,18 +6,18 @@
   "target": "@env(DEFAULT)",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "MixinEntityArrow_pierce",
-    "MixinEntityArrow_xbowdamage",
-    "MixinEntityFireworkRocket_shotrocket",
-    "MixinEntityLivingBase_multishotMultihit",
-    "MixinEntitySkeleton_xbow_enchants",
-    "MixinItemBow_xbow_enchants"
+    "xbow.MixinEntityArrow_pierce",
+    "xbow.MixinEntityArrow_xbowdamage",
+    "xbow.MixinEntityFireworkRocket_shotrocket",
+    "xbow.MixinEntityLivingBase_multishotMultihit",
+    "xbow.MixinEntitySkeleton_xbow_enchants",
+    "xbow.MixinItemBow_xbow_enchants"
   ],
-  "//": [
-    "MixinProjectileFireworkRocket"
+  "disabled_mixins": [
+
   ],
   "client": [
-    "MixinEntityFireworkStarterFX_boom"
+    "xbow.MixinEntityFireworkStarterFX_boom"
   ],
   "server": []
 }

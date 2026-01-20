@@ -1,4 +1,4 @@
-package invalid.myask.vindicateandspendicate.mixin;
+package invalid.myask.vindicateandspendicate.mixin.xbow;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import org.spongepowered.asm.mixin.Mixin;

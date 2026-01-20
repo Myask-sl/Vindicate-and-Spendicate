@@ -1,4 +1,4 @@
-package invalid.myask.vindicateandspendicate.mixin;
+package invalid.myask.vindicateandspendicate.mixin.xbow;
 
 import invalid.myask.vindicateandspendicate.api.IBlowUp;
 import invalid.myask.vindicateandspendicate.util.FireworksExploder;

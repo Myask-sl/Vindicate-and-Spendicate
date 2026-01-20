@@ -1,5 +1,6 @@
 package invalid.myask.vindicateandspendicate.entity.ai;
 
+import invalid.myask.vindicateandspendicate.Config;
 import invalid.myask.vindicateandspendicate.api.CrossbowHelper;
 import invalid.myask.vindicateandspendicate.entity.illager.EntityPillager;
 import invalid.myask.vindicateandspendicate.item.ItemXBow;
@@ -18,7 +19,7 @@ public class EntityAIReloadCrossbow extends EntityAIBase {
         if (I instanceof EntityPillager) pillage = true;
         this.setMutexBits(2); //reload on the run, but can't attack while doing so
         munition = ammo;
-        pullTime = 15;
+        pullTime = Config.crossbow_base_charge_ticks;
     }
 
     @Override
