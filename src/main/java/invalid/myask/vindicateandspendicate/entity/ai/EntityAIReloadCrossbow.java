@@ -2,7 +2,7 @@ package invalid.myask.vindicateandspendicate.entity.ai;
 
 import invalid.myask.vindicateandspendicate.Config;
 import invalid.myask.vindicateandspendicate.api.CrossbowHelper;
-import invalid.myask.vindicateandspendicate.entity.illager.EntityPillager;
+import invalid.myask.vindicateandspendicate.api.IWeaponReloader;
 import invalid.myask.vindicateandspendicate.item.ItemXBow;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -12,11 +12,11 @@ public class EntityAIReloadCrossbow extends EntityAIBase {
     EntityLiving I;
     long endTime, pullTime;
     ItemStack munition;
-    boolean pillage = true;
+    boolean loader = true;
     public EntityAIReloadCrossbow(EntityLiving entityPillager, ItemStack ammo) {
         super();
         I = entityPillager;
-        if (I instanceof EntityPillager) pillage = true;
+        if (I instanceof IWeaponReloader) loader = true;
         this.setMutexBits(2); //reload on the run, but can't attack while doing so
         munition = ammo;
         pullTime = Config.crossbow_base_charge_ticks;
@@ -33,8 +33,8 @@ public class EntityAIReloadCrossbow extends EntityAIBase {
         ItemStack held = I.getHeldItem();
         pullTime = ((ItemXBow)held.getItem()).pullTime(held);
         endTime = I.worldObj.getTotalWorldTime() + pullTime;
-        if (pillage)
-            ((EntityPillager)I).setLoadProgress(0);
+        if (loader)
+            ((IWeaponReloader)I).setLoadProgress(0);
         //TODO playloadSound(held);
     }
 
@@ -46,9 +46,9 @@ public class EntityAIReloadCrossbow extends EntityAIBase {
             ItemStack held = I.getHeldItem();
             ((ItemXBow) held.getItem()).loadWith(held, munition.copy());
             //TODO: playLoadClick(held)
-            if (pillage)
-                ((EntityPillager)I).setLoadProgress(0);
-        } else if (pullTime != 0 && pillage)
-            ((EntityPillager)I).setLoadProgress((int) (100 * (endTime - now) / pullTime));
+            if (loader)
+                ((IWeaponReloader)I).setLoadProgress(0);
+        } else if (pullTime != 0 && loader)
+            ((IWeaponReloader)I).setLoadProgress((int) (100 * (endTime - now) / pullTime));
     }
 }

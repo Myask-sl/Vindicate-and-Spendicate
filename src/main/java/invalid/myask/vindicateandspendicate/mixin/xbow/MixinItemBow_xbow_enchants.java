@@ -16,7 +16,7 @@ import invalid.myask.vindicateandspendicate.api.CrossbowHelper;
 
 @Mixin(ItemBow.class)
 public class MixinItemBow_xbow_enchants {
-    // TODO
+    // TODO ...? what, quick charge?
     @Inject(method = "onPlayerStoppedUsing",
     at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;spawnEntityInWorld(Lnet/minecraft/entity/Entity;)Z"))
     private void alteredArrow(ItemStack launcher, World world, EntityPlayer user, int p_77615_4_, CallbackInfo ci, @Local EntityArrow shot) {

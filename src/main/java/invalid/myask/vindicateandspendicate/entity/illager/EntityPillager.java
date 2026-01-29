@@ -1,11 +1,11 @@
 package invalid.myask.vindicateandspendicate.entity.illager;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
 import invalid.myask.vindicateandspendicate.Config;
 import invalid.myask.vindicateandspendicate.VindicateItems;
 import invalid.myask.vindicateandspendicate.api.CrossbowHelper;
 import invalid.myask.vindicateandspendicate.api.ITemPreferrer;
+import invalid.myask.vindicateandspendicate.api.IWeaponReloader;
 import invalid.myask.vindicateandspendicate.compat.EtFuturumWrappium;
 import invalid.myask.vindicateandspendicate.entity.ai.EntityAIFollowLeader;
 import invalid.myask.vindicateandspendicate.entity.ai.EntityAIReloadCrossbow;
@@ -40,7 +40,7 @@ import net.minecraft.world.World;
 
 import java.util.UUID;
 
-public class EntityPillager extends EntityMob implements IEntityOwnable, IRangedAttackMob, Illager, ITemPreferrer {
+public class EntityPillager extends EntityMob implements IEntityOwnable, IRangedAttackMob, Illager, ITemPreferrer, IWeaponReloader {
 
     private final EntityAIBreakDoor DOOR_ATTACK;
     private final EntityAIAttackOnCollide GETIN_ATTACK ;
