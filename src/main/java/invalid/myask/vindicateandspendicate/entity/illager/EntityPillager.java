@@ -7,6 +7,7 @@ import invalid.myask.vindicateandspendicate.api.CrossbowHelper;
 import invalid.myask.vindicateandspendicate.api.ITemPreferrer;
 import invalid.myask.vindicateandspendicate.api.IWeaponReloader;
 import invalid.myask.vindicateandspendicate.compat.EtFuturumWrappium;
+import invalid.myask.vindicateandspendicate.compat.HogTagWrap;
 import invalid.myask.vindicateandspendicate.entity.ai.EntityAIFollowLeader;
 import invalid.myask.vindicateandspendicate.entity.ai.EntityAIReloadCrossbow;
 import invalid.myask.vindicateandspendicate.entity.ai.EntityAITargetLeadersTarget;
@@ -173,18 +174,14 @@ public class EntityPillager extends EntityMob implements IEntityOwnable, IRanged
     }
 
     @Override
-    public int preferNewItem(int slot, Item oldItem, Item newItem) { //TODO: tags
+    public int preferItem(int slot, Item item) {
+        int result = 0;
         if (slot == 0) {
-            if (oldItem instanceof ItemXBow) {
-                return (newItem instanceof ItemXBow) ? 0 : -1;
-            } else {
-                return (newItem instanceof ItemXBow) || (newItem instanceof ItemAxe) ? 1 : 0;
-            }
+            result = HogTagWrap.instance.taggedPillagerWeaponPreference(item);
         } else if (slot == 4) {
-            return EtFuturumWrappium.instance.isEFRBanner(oldItem) ? -1 :
-                EtFuturumWrappium.instance.isEFRBanner(newItem) ? 1 : 0;
+            if (EtFuturumWrappium.instance.isEFRBanner(item)) result = 1;
         }
-        return 0;
+        return result;
     }
 
     @Override

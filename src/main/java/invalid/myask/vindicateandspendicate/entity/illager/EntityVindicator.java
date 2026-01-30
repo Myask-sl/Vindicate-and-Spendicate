@@ -1,13 +1,13 @@
 package invalid.myask.vindicateandspendicate.entity.illager;
 
 import invalid.myask.vindicateandspendicate.Config;
+import invalid.myask.vindicateandspendicate.compat.EtFuturumWrappium;
+import invalid.myask.vindicateandspendicate.compat.HogTagWrap;
 import invalid.myask.vindicateandspendicate.entity.ai.EntityAIGoCrazy;
-import invalid.myask.vindicateandspendicate.item.ItemXBow;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -81,16 +81,13 @@ public class EntityVindicator extends EntityPillager {
     }
 
     @Override
-    public int preferNewItem(int slot, Item oldItem, Item newItem) {
+    public int preferItem(int slot, Item item) {
+        int result = 0;
         if (slot == 0) {
-            if (oldItem instanceof ItemAxe) {
-                return (newItem instanceof ItemAxe) ? 0 : -1;
-            } else {
-                return (newItem instanceof ItemXBow) || (newItem instanceof ItemAxe) ? 1 : 0;
-            }
+            result = HogTagWrap.instance.taggedVindicatorWeaponPreference(item);
         } else if (slot == 4) {
-            return super.preferNewItem(slot, oldItem, newItem);
+            if (EtFuturumWrappium.instance.isEFRBanner(item)) result = 1;
         }
-        return 0;
+        return result;
     }
 }
