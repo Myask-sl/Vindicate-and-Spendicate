@@ -13,13 +13,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 public class EntityVindicator extends EntityPillager {
-    protected boolean wearingTux, amJohnny, existentialCrisisCheck;
+    protected boolean wearingTux, amJohnny;
 
     public EntityVindicator(World world) {
         super(world);
         wearingTux = (rand.nextFloat() < 0.05);
         amJohnny = false;
-        existentialCrisisCheck = false;
         tasks.addTask(1, new EntityAIGoCrazy(this));
     }
 
@@ -44,12 +43,12 @@ public class EntityVindicator extends EntityPillager {
     public void writeEntityToNBT(NBTTagCompound tagCompound) {
         super.writeEntityToNBT(tagCompound);
         if (wearingTux) tagCompound.setBoolean("vindicatorTuxedo", true); //don't waste space on normal case
-        if (amJohnny) tagCompound.setBoolean("Johnny", true);
+        tagCompound.setBoolean("Johnny", amJohnny); //save false to overwrite name!
     }
 
     @Override
     public void readEntityFromNBT(NBTTagCompound tagCompound) {
-        super.readEntityFromNBT(tagCompound);
+        super.readEntityFromNBT(tagCompound); //note this may call setCustomNameTag, so has to be before Johnny tag read
         wearingTux = tagCompound.getBoolean("vindicatorTuxedo"); //not-present = false;
         amJohnny = tagCompound.getBoolean("Johnny");
     }
@@ -63,21 +62,10 @@ public class EntityVindicator extends EntityPillager {
     }
 
     @Override
-    protected boolean interact(EntityPlayer alex) {
-        ItemStack equippedItem = alex.getCurrentEquippedItem();
-        if (equippedItem != null)
-            existentialCrisisCheck = equippedItem.getItem() == Items.name_tag; //Vindicator will remember this
-        return super.interact(alex);
-    }
-
-    @Override
-    protected void updateAITasks() {
-        if (existentialCrisisCheck) {
-            amJohnny = (amJohnny && Config.vindicator_johnny_persists)
-                || (hasCustomNameTag() && "Johnny".equals(getCustomNameTag()));
-            existentialCrisisCheck = false;
-        }
-        super.updateAITasks();
+    public void setCustomNameTag(String newName) {
+        super.setCustomNameTag(newName);
+        amJohnny = (amJohnny && Config.vindicator_johnny_persists)
+            || "Johnny".equals(newName);
     }
 
     @Override
