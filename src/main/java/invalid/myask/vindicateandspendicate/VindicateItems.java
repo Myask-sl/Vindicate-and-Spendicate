@@ -3,7 +3,6 @@ package invalid.myask.vindicateandspendicate;
 import java.util.List;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import invalid.myask.vindicateandspendicate.item.VindicUCItem;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
@@ -14,10 +13,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
 import invalid.myask.vindicateandspendicate.item.ItemXBow;
+import invalid.myask.vindicateandspendicate.item.VindicUCItem;
+import invalid.myask.vindicateandspendicate.util.FireworksBuilder;
 
 public class VindicateItems {
 
     public static CreativeTabs TAB;
+    public static CreativeTabs FIREWORKS_TAB;
 
     public static ItemXBow XBOW;
 
@@ -26,7 +28,7 @@ public class VindicateItems {
 
 
     public static void register() {
-        if (!Config.addToVanillaTabs) TAB = new CreativeTabs("vindicateandspendicate") {
+        if (!Config.add_to_vanilla_tabs) TAB = new CreativeTabs("vindicateandspendicate") {
             @Override
             public Item getTabIconItem() {
                 return XBOW;
@@ -55,7 +57,8 @@ public class VindicateItems {
                     nbtLargeBall.setBoolean("Trail", true);
                     nbtLargeBall.setBoolean("Flicker", true);
                 }
-                if (Config.creative_pregen_modern_redundant_fireworks_nbt) {
+                if (Config.modern_redundant_fireworks_nbt) {
+                    nbtBang.setString("shape", "concussion");
                     nbtLargeBall.setString("shape", "large_ball");
                     nbtLargeBall.setIntArray("colors", colors);
                     nbtLargeBall.setIntArray("fade_colors", colors);
@@ -79,6 +82,33 @@ public class VindicateItems {
                 super.displayAllReleventItems(tabbedItems);
             }
         };
+        if (Config.legacy_console_fireworks_tab) FIREWORKS_TAB = new CreativeTabs("legacyfireworks") {
+            final ItemStack fly1_ltblue_smball_twinkle = (new FireworksBuilder(1))
+                .withNonfadeExplosion((byte) 0xC, (byte) 0, true, false).build();
+            final ItemStack fly2_green_creeper = (new FireworksBuilder(2))
+                .withNonfadeExplosion((byte) 0x2, (byte) 3).build();
+            final ItemStack fly2_red_burst_fadeto_orange = (new FireworksBuilder(2))
+                .withFadeExplosion((byte) 0x1, (byte) 0xE, (byte) 4).build();
+            final ItemStack fly3_magenta_burst_fadeto_blue_twinkle = (new FireworksBuilder(3))
+                .withFadeExplosion((byte) 0xD, (byte) 0x4, (byte) 4).build();
+            final ItemStack fly2_yellow_star_fadeto_orange_trail = (new FireworksBuilder(2))
+                .withFadeExplosion((byte) 0xC, (byte) 0xE, (byte) 2, false, true).build();
+
+            @Override
+            public Item getTabIconItem() {
+                return Items.fireworks;
+            }
+
+            @Override
+            public void displayAllReleventItems(List<ItemStack> tabbedItems) {
+                tabbedItems.add(fly1_ltblue_smball_twinkle;
+                tabbedItems.add(fly2_green_creeper);
+                tabbedItems.add(fly2_red_burst_fadeto_orange);
+                tabbedItems.add(fly3_magenta_burst_fadeto_blue_twinkle);
+                tabbedItems.add(fly2_yellow_star_fadeto_orange_trail);
+                super.displayAllReleventItems(tabbedItems);
+            }
+        };
 
         XBOW = new ItemXBow();
         XBOW.setNames("crossbow");
@@ -90,7 +120,7 @@ public class VindicateItems {
     static void registerAnItem(Item item, CreativeTabs vanillaTab) {
         GameRegistry.registerItem(item, item.getUnlocalizedName().substring(5), VindicateAndSpendicate.MODID);
         //substring(5) trims off the "item." that it adds
-        if (Config.addToVanillaTabs) item.setCreativeTab(vanillaTab);
+        if (Config.add_to_vanilla_tabs) item.setCreativeTab(vanillaTab);
         else item.setCreativeTab(TAB);
     }
 }

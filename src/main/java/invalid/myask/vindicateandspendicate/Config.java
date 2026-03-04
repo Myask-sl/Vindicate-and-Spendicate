@@ -27,13 +27,14 @@ public class Config {
     public static boolean dualshot_enable = true; //vanilla false
     public static boolean random_crossbow_damage = true; // Javalike
     public static double multishot_spread = Math.PI / 18;
-    public static boolean addToVanillaTabs = false;
+    public static boolean add_to_vanilla_tabs = false;
+    public static boolean legacy_console_fireworks_tab = true;
     public static boolean fireworks_impact_fuse = true; //like Java
     public static float rocket_init_v_magnitude = 0.75F;
 
     public static boolean permit_multishot_damage_same = true; //TODO not in yet. Vanilla hasn't done it.
 
-    public static boolean creative_pregen_modern_redundant_fireworks_nbt = false;
+    public static boolean modern_redundant_fireworks_nbt = false;
     public static boolean creative_pregen_fireworks_extravagant = false;
     public static boolean damage_per_multishot = false; //damage launcher per multishot: vanilla true
 
