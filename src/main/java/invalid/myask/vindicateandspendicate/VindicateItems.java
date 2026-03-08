@@ -101,7 +101,7 @@ public class VindicateItems {
 
             @Override
             public void displayAllReleventItems(List<ItemStack> tabbedItems) {
-                tabbedItems.add(fly1_ltblue_smball_twinkle;
+                tabbedItems.add(fly1_ltblue_smball_twinkle);
                 tabbedItems.add(fly2_green_creeper);
                 tabbedItems.add(fly2_red_burst_fadeto_orange);
                 tabbedItems.add(fly3_magenta_burst_fadeto_blue_twinkle);
