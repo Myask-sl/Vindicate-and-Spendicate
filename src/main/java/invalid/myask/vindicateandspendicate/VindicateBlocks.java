@@ -8,7 +8,7 @@ import invalid.myask.vindicateandspendicate.block.BlockBell;
 import invalid.myask.vindicateandspendicate.tileentity.TileEntityBell;
 
 public class VindicateBlocks {
-    public static Block BELL = new BlockBell().setStepSound(Block.soundTypeAnvil).setHardness(5);
+    public static Block BELL = new BlockBell().setStepSound(Block.soundTypeAnvil).setHardness(5).setBlockName("bell");
 
     public static void register() {
         registerABlock(BELL, "bell", CreativeTabs.tabDecorations);

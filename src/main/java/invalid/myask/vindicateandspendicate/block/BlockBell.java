@@ -1,8 +1,7 @@
 package invalid.myask.vindicateandspendicate.block;
 
-import invalid.myask.vindicateandspendicate.VindicateAndSpendicate;
-import invalid.myask.vindicateandspendicate.compat.EtFuturumWrappium;
-import invalid.myask.vindicateandspendicate.util.VectorHelper;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.MapColor;
@@ -16,14 +15,17 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import invalid.myask.vindicateandspendicate.Config;
+import invalid.myask.vindicateandspendicate.VindicateAndSpendicate;
+import invalid.myask.vindicateandspendicate.client.tileentity.RenderBell;
+import invalid.myask.vindicateandspendicate.compat.EtFuturumWrappium;
 import invalid.myask.vindicateandspendicate.tileentity.TileEntityBell;
-
-import java.util.List;
+import invalid.myask.vindicateandspendicate.util.VectorHelper;
 
 public class BlockBell extends Block implements ITileEntityProvider {
     public BlockBell() {
@@ -44,14 +46,19 @@ public class BlockBell extends Block implements ITileEntityProvider {
                && entityIn instanceof IProjectile shot
                && worldIn.getTileEntity(x, y, z) instanceof TileEntityBell bell) {
             if (!(Config.all_shots_ring_bells || entityIn instanceof EntityArrow)) return; //also includes tridents
-            int side = collisionRayTrace(worldIn, x, y, z,
-                VectorHelper.entityPosAsVec3(entityIn), VectorHelper.entityVAsVec3(entityIn)).sideHit;
-            boolean result = switch (worldIn.getBlockMetadata(x, y, z)) {
-                case 1 -> true; //can ring either way!
-                case 0, 2 -> (side & 6) == 2;
-                case 3, 4 -> (side & 6) == 4;
-                default -> false;
-            };
+            MovingObjectPosition movingObjectPosition = collisionRayTrace(worldIn, x, y, z,
+                VectorHelper.entityPosAsVec3(entityIn), VectorHelper.entityVAsVec3(entityIn));
+            boolean result;
+            int side = 4;
+            if (movingObjectPosition != null) {
+                side = movingObjectPosition.sideHit;
+                result = switch (worldIn.getBlockMetadata(x, y, z)) {
+                    case 1 -> true; //can ring either way!
+                    case 0, 2 -> (side & 6) == 2;
+                    case 3, 4 -> (side & 6) == 4;
+                    default -> false;
+                };
+            } else result = false;
             if (result)
                 bell.ringByShot(x, y, z, entityIn, side);
         }
@@ -164,7 +171,7 @@ public class BlockBell extends Block implements ITileEntityProvider {
 
     @Override
     public int getRenderType() {
-        return super.getRenderType();
+        return RenderBell.instance.RENDER_ID;
     }
 
     public void setBlockBoundsForRender(IBlockAccess world, int x, int y, int z, int part) {

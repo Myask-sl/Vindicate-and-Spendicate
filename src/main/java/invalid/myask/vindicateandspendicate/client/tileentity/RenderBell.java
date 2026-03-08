@@ -1,5 +1,7 @@
 package invalid.myask.vindicateandspendicate.client.tileentity;
 
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.block.Block;
@@ -71,7 +73,11 @@ public class RenderBell extends TileEntitySpecialRenderer implements ISimpleBloc
             model.setRotationAngle((float) (bellTE.rotation.x + bellTE.rot_v.x * partialTick),
                 (float) (bellTE.rotation.y + bellTE.rot_v.y * partialTick),
                 (float) (bellTE.rotation.z + bellTE.rot_v.z * partialTick));
+
+            GL11.glPushMatrix();
+            GL11.glTranslatef((float)x , (float)y , (float)z );
             model.render(null, 0, 0,0 ,0, 0,0.0625F);
+            GL11.glPopMatrix();
         }
     }
 }

@@ -1,7 +1,4 @@
-itemGroup.vindicateandspendicate=Vindicate and Spendicate
-itemGroup.legacyfireworks=Legacy Console Edition fireworks selection
-item.crossbow.name=Crossbow
-item.totem_dying.name=Totem of Dying
+block.bell.name=Bell
 
 death.attack.fireworks=%1$s went off with a bang
 death.attack.shotfireworks=%1$s experienced %2$s's fireworks display finally
@@ -16,3 +13,8 @@ enchantment.xbow.dualshot.y=Shot-over-shot
 
 entity.vindicateandspendicate.Pillager.name=Pillager
 entity.vindicateandspendicate.Vindicator.name=Vindicator
+
+itemGroup.vindicateandspendicate=Vindicate and Spendicate
+itemGroup.legacyfireworks=Legacy Console Edition fireworks selection
+item.crossbow.name=Crossbow
+item.totem_dying.name=Totem of Dying
