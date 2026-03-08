@@ -60,6 +60,17 @@ public class Config {
 
     public static boolean omens_in_bottles = false;
 
+    public static boolean shot_bells_ring = true;
+    public static boolean all_shots_ring_bells = true; //1.15+: before, only arrows/tridents
+    public static boolean rightclicked_bells_ring = true;
+    public static boolean redstoned_bells_ring = true;
+    public static boolean bell_morphs_support = VANILLA_FALSE;
+    public static boolean bell_redstone_swings_correctly = VANILLA_FALSE; //normally it just swings to +x (that is, rolls)
+    public static float bell_effect_radius = 32;
+    public static boolean bell_swing_physics = false;
+    public static boolean bells_reset_rotation = false;
+    public static double bell_static_swing_mag = 1;
+
     public static void synchronizeConfiguration(File configFile) {
         Configuration configuration = new Configuration(configFile);
         // TODO: all configurables

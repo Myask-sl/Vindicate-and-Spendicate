@@ -54,4 +54,16 @@ public class EtFuturumWrappium {
     public boolean isEFROminousBanner(ItemStack stack) {
         return false;
     }
+
+    public boolean isVerticalChain(World world, int x, int y, int z) {
+        return false;
+    }
+
+    public int getGlowingPotionID() {
+        return -1;
+    }
+
+    public boolean glowingExists() {
+        return getGlowingPotionID() != -1;
+    }
 }

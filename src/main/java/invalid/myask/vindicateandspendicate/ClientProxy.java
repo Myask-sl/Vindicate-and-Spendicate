@@ -1,12 +1,17 @@
 package invalid.myask.vindicateandspendicate;
 
+import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 
 import invalid.myask.vindicateandspendicate.api.CrossbowHelper;
+import invalid.myask.vindicateandspendicate.client.tileentity.RenderBell;
 import invalid.myask.vindicateandspendicate.item.ItemXBow;
+import invalid.myask.vindicateandspendicate.tileentity.TileEntityBell;
 
 public class ClientProxy extends CommonProxy {
 
@@ -23,5 +28,12 @@ public class ClientProxy extends CommonProxy {
             Item spectral = GameRegistry.findItem("etfuturum", "spectral_arrow");
             if (spectral != null) CrossbowHelper.registerLoad(spectral, ItemXBow.iconSpectralArrow);
         }
+    }
+
+    @Override
+    public void preInit(FMLPreInitializationEvent event) {
+        super.preInit(event);
+        RenderingRegistry.registerBlockHandler(RenderBell.instance);
+        ClientRegistry.registerTileEntity(TileEntityBell.class, "village_bell", RenderBell.instance);
     }
 }

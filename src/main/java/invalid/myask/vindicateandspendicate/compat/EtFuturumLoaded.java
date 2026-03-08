@@ -85,4 +85,9 @@ public class EtFuturumLoaded extends EtFuturumWrappium {
         }
         return false;
     }
+
+    @Override
+    public boolean isVerticalChain(World world, int x, int y, int z) {
+        return world.getBlockMetadata(x, y, z) == 0 && world.getBlock(x, y, z) == ModBlocks.CHAIN.get();
+    }
 }

@@ -22,6 +22,7 @@ public class CommonProxy {
 
         VindicateAndSpendicate.LOG.info("I am " + VindicateAndSpendicate.MODNAME + " at version " + Tags.VERSION);
 
+        VindicateBlocks.register();
         VindicateItems.register();
         VindicateEnchantments.register();
         VindicateEntities.register();

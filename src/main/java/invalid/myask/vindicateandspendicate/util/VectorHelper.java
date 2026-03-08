@@ -24,6 +24,8 @@ public class VectorHelper {
         return Vec3.createVectorHelper(e.posX, e.posY, e.posZ);
     }
 
+    public static Vec3 entityVAsVec3(Entity e) { return Vec3.createVectorHelper(e.motionX, e.motionY, e.motionZ); }
+
     public static Vector3d createEntityPosAsVector3d(Entity e) {
         return new Vector3d(e.posX, e.posY, e.posZ);
     }
