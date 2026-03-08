@@ -1,5 +1,3 @@
-block.bell.name=Bell
-
 death.attack.fireworks=%1$s went off with a bang
 death.attack.shotfireworks=%1$s experienced %2$s's fireworks display finally
 death.attack.shotfireworks.item=%1$s experienced %2$s's fireworks display of %3$s finally
@@ -18,3 +16,5 @@ itemGroup.vindicateandspendicate=Vindicate and Spendicate
 itemGroup.legacyfireworks=Legacy Console Edition fireworks selection
 item.crossbow.name=Crossbow
 item.totem_dying.name=Totem of Dying
+
+tile.bell.name=Bell

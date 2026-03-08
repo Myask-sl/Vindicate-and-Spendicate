@@ -71,11 +71,11 @@ public class RenderBell extends TileEntitySpecialRenderer implements ISimpleBloc
         if (tileEntity instanceof TileEntityBell bellTE) {
             bindTexture(BELL_TEXTURE);
             model.setRotationAngle((float) (bellTE.rotation.x + bellTE.rot_v.x * partialTick),
-                (float) (bellTE.rotation.y + bellTE.rot_v.y * partialTick),
+                (float) (bellTE.rotation.y + bellTE.rot_v.y * partialTick) + 180,
                 (float) (bellTE.rotation.z + bellTE.rot_v.z * partialTick));
 
             GL11.glPushMatrix();
-            GL11.glTranslatef((float)x , (float)y , (float)z );
+            GL11.glTranslatef((float)x + .5F, (float)y +.5F, (float)z + .5F);
             model.render(null, 0, 0,0 ,0, 0,0.0625F);
             GL11.glPopMatrix();
         }
