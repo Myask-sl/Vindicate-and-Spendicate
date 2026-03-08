@@ -5,6 +5,7 @@ import java.io.File;
 import net.minecraftforge.common.config.Configuration;
 
 public class Config {
+    private static final boolean VANILLA_FALSE = true; //stuff I want to test that in vanilla will not be in
 
     public static int enchid_quickcharge = 67;
     public static int enchid_multishot = 68;
@@ -23,8 +24,8 @@ public class Config {
 
     public static boolean craftable_crossbow = true;
     public static boolean crossbow_enchants_enable = true;
-    public static boolean multishot_y_enable = true; //vanilla false
-    public static boolean dualshot_enable = true; //vanilla false
+    public static boolean multishot_y_enable = VANILLA_FALSE;
+    public static boolean dualshot_enable = VANILLA_FALSE;
     public static boolean random_crossbow_damage = true; // Javalike
     public static double multishot_spread = Math.PI / 18;
     public static boolean add_to_vanilla_tabs = false;
@@ -32,7 +33,7 @@ public class Config {
     public static boolean fireworks_impact_fuse = true; //like Java
     public static float rocket_init_v_magnitude = 0.75F;
 
-    public static boolean permit_multishot_damage_same = true; //TODO not in yet. Vanilla hasn't done it.
+    public static boolean permit_multishot_damage_same = VANILLA_FALSE; //TODO not in yet. Vanilla hasn't done it.
 
     public static boolean modern_redundant_fireworks_nbt = false;
     public static boolean creative_pregen_fireworks_extravagant = false;
