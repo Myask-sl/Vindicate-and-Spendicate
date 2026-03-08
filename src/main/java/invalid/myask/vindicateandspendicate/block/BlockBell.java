@@ -48,7 +48,7 @@ public class BlockBell extends Block implements ITileEntityProvider {
             if (!(Config.all_shots_ring_bells || entityIn instanceof EntityArrow)) return; //also includes tridents
             MovingObjectPosition movingObjectPosition = collisionRayTrace(worldIn, x, y, z,
                 VectorHelper.entityPosAsVec3(entityIn), VectorHelper.entityVAsVec3(entityIn));
-            boolean result;
+            boolean result = false;
             int side = 4;
             if (movingObjectPosition != null) {
                 side = movingObjectPosition.sideHit;
@@ -58,7 +58,16 @@ public class BlockBell extends Block implements ITileEntityProvider {
                     case 3, 4 -> (side & 6) == 4;
                     default -> false;
                 };
-            } else result = false;
+            } else {
+                if (Math.abs(entityIn.motionX) > Math.abs(entityIn.motionZ)) {
+                    if (entityIn.motionX > 0) side = 4; //West
+                    else side = 5; //East
+                } else {
+                    if (entityIn.motionZ > 0) side = 2; //North
+                    else side = 3; //South
+                }
+                result = true;
+            }
             if (result)
                 bell.ringByShot(x, y, z, entityIn, side);
         }
