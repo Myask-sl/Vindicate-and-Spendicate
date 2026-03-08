@@ -35,7 +35,7 @@ public class EntityAIReloadCrossbow extends EntityAIBase {
         endTime = I.worldObj.getTotalWorldTime() + pullTime;
         if (loader)
             ((IWeaponReloader)I).setLoadProgress(0);
-        //TODO playloadSound(held);
+        I.playSound("illager.xbow.charge", 1, .9F + .2F * I.getRNG().nextFloat());
     }
 
     //    public boolean continueExecuting() {} //falls through to shouldExecute, so is fine
@@ -45,7 +45,7 @@ public class EntityAIReloadCrossbow extends EntityAIBase {
         if (now > endTime) { //note that continueExecuting guarantees equipped Xbow
             ItemStack held = I.getHeldItem();
             ((ItemXBow) held.getItem()).loadWith(held, munition.copy());
-            //TODO: playLoadClick(held)
+            I.playSound("illager.xbow.charge.done", 1, .9F + .2F * I.getRNG().nextFloat());
             if (loader)
                 ((IWeaponReloader)I).setLoadProgress(0);
         } else if (pullTime != 0 && loader)

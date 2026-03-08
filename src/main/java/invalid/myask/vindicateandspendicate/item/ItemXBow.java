@@ -39,7 +39,7 @@ public class ItemXBow extends VindicItem {
                     ammoSource = ammoSource.copy();
                     ammoSource.stackSize = 1;
                 } else ammoSource = ammoSource.splitStack(1);
-                //TODO: charge SFX?
+                user.playSound("item.xbow.charge.done", 1, 0.9F + 0.2F * user.getRNG().nextFloat());
 
                 loadWith(stack, ammoSource);
             }
@@ -77,6 +77,7 @@ public class ItemXBow extends VindicItem {
         }
         else if (user.capabilities.isCreativeMode || CrossbowHelper.findProjectile(user.inventory) >= 0)
         {
+            user.playSound("item.xbow.charge", 1, .9F + .2F * user.getRNG().nextFloat());
             user.setItemInUse(stack, getMaxItemUseDuration(stack));
         }
         return super.onItemRightClick(stack, world, user);

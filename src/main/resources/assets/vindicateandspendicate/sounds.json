@@ -1,0 +1,38 @@
+{
+  "block.bell.ring": {
+    "category": "block",
+    "sounds": [
+      "block/bell.ring"
+    ]
+  },
+  "block.bell.resonate": {
+    "category": "block",
+    "sounds": [
+      "block/bell.resonate"
+    ]
+  },
+  "item.xbow.charge": {
+    "category": "player",
+    "sounds": [
+      "item/xbow.charge"
+    ]
+  },
+  "item.xbow.charge.done": {
+    "category": "player",
+    "sounds": [
+      "item/xbow.charge.done"
+    ]
+  },
+  "illager.xbow.charge": {
+    "category": "hostile",
+    "sounds": [
+      "item/xbow.charge"
+    ]
+  },
+  "illager.xbow.charge.done": {
+    "category": "player",
+    "sounds": [
+      "item/xbow.charge.done"
+    ]
+  }
+}
