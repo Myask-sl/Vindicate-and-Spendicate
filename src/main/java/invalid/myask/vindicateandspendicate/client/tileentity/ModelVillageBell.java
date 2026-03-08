@@ -17,9 +17,9 @@ public class ModelVillageBell extends ModelBase {
 		textureHeight = 32;
 
 		bone = new ModelRenderer(this);
-		bone.setRotationPoint(0.0F, 9.0F, 0.0F);
-		bone.cubeList.add(new ModelBox(bone, 0, 13, -4.0F, 8.0F, -4.0F, 8, 2, 8, 0.0F));
-		bone.cubeList.add(new ModelBox(bone, 0, 0, -3.0F, 1.0F, -3.0F, 6, 7, 6, 0.0F));
+		bone.setRotationPoint(0.0F, 14.0F, 0.0F);
+		bone.cubeList.add(new ModelBox(bone, 0, 13, -4.0F, -10.0F, -4.0F, 8, 2, 8, 0.0F));
+		bone.cubeList.add(new ModelBox(bone, 0, 0, -3.0F, -8.0F, -3.0F, 6, 7, 6, 0.0F));
 	}
 
 	@Override

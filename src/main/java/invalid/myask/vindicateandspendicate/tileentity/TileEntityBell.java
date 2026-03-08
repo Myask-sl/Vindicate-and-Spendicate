@@ -16,6 +16,10 @@ import net.minecraft.entity.projectile.EntityEgg;
 import net.minecraft.entity.projectile.EntityPotion;
 import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.init.Blocks;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -184,5 +188,50 @@ public class TileEntityBell extends TileEntity {
     @Override
     public boolean canUpdate() {
         return true;
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound compound) {
+        super.writeToNBT(compound);
+        compound.setDouble("rotation_x", rotation.x);
+        compound.setDouble("rotation_y", rotation.y);
+        compound.setDouble("rotation_z", rotation.z);
+        compound.setDouble("rot_v_x", rot_v.x);
+        compound.setDouble("rot_v_y", rot_v.y);
+        compound.setDouble("rot_v_z", rot_v.z);
+        compound.setInteger("ticksRung", ticksRung);
+        compound.setInteger("meta", meta);
+        compound.setBoolean("wasPowered", wasPowered);
+        compound.setBoolean("rungX", rungX);
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound compound) {
+        super.readFromNBT(compound);
+
+        rotation.x = compound.getDouble("rotation_x");
+        rotation.y = compound.getDouble("rotation_y");
+        rotation.z = compound.getDouble("rotation_z");
+        rot_v.x = compound.getDouble("rot_v_x");
+        rot_v.y = compound.getDouble("rot_v_y");
+        rot_v.z = compound.getDouble("rot_v_z");
+        ticksRung = compound.getInteger("ticksRung");
+        meta = compound.getInteger("meta");
+        wasPowered = compound.getBoolean("wasPowered");
+        rungX = compound.getBoolean("rungX");
+    }
+
+    @Override
+    public Packet getDescriptionPacket() {
+        NBTTagCompound wholeShebang = new NBTTagCompound();
+        writeToNBT(wholeShebang);
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, meta, wholeShebang);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+        super.onDataPacket(net, pkt);
+        NBTTagCompound wholeShebang = pkt.func_148857_g();
+        readFromNBT(wholeShebang);
     }
 }
