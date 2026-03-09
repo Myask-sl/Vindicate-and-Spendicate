@@ -25,6 +25,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -83,11 +84,19 @@ public class TileEntityBell extends TileEntity {
     }
 
     public void ringByPress(int x, int y, int z, EntityPlayer player, int side) {
+        MovingObjectPosition hit;
+        Vec3 lookVec = player.getLookVec();
         if (Config.bell_swing_physics) {
-            MovingObjectPosition hit = player.worldObj.getBlock(x, y, z).collisionRayTrace(player.worldObj, x, y, z,
-                VectorHelper.entityPosAsVec3(player), player.getLookVec());
-            Vector3d vec = new Vector3d(hit.hitVec.xCoord, hit.hitVec.yCoord, hit.hitVec.zCoord);
-            double radius = vec.distance(x + .5, y + 14/16F, z + .5);
+            hit = player.worldObj.getBlock(x, y, z).collisionRayTrace(player.worldObj, x, y, z,
+                VectorHelper.entityPosAsVec3(player), lookVec);
+        }
+        if (hit != null && hit.hitVec != null) {
+            Vector3d hitVec = new Vector3d(hit.hitVec.xCoord, hit.hitVec.yCoord, hit.hitVec.zCoord);
+            double radius = hitVec.distance(x + .5, y + 14/16F, z + .5);
+            hitVec.set(x + .5 - hitVec.x, y + 14/16F - hitVec.y, y + .5 - hitVec.z);
+            hitVec.cross(lookVec.xCoord, lookVec.yCoord, lookVec.zCoord);
+            hitVec.mul(radius * 3 / K_BELL_SQUARED_TIMES_M_BELL);
+            addOrRestartSwing(hitVec.x, hitVec.y, hitVec.z);
         } else
             swingNormal(side);
         ring(x, y, z);

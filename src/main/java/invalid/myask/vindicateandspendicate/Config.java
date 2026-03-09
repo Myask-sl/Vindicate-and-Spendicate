@@ -67,8 +67,8 @@ public class Config {
     public static boolean bell_morphs_support = VANILLA_FALSE;
     public static boolean bell_redstone_swings_correctly = VANILLA_FALSE; //normally it just swings to +x (that is, rolls)
     public static float bell_effect_radius = 32;
-    public static boolean bell_swing_physics = false;
-    public static boolean bells_reset_rotation = false;
+    public static boolean bell_swing_physics = true;
+    public static boolean bells_reset_rotation = false; //only maters if physics on
     public static double bell_static_swing_mag = 1;
 
     public static void synchronizeConfiguration(File configFile) {
