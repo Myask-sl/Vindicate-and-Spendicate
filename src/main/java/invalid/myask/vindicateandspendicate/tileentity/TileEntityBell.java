@@ -43,7 +43,7 @@ public class TileEntityBell extends TileEntity {
     protected boolean wasPowered;
     protected IIcon supportIcon;
     protected AxisAlignedBB ringBox;
-    protected boolean rungX;
+    protected ForgeDirection ringDir;
 
     public TileEntityBell(World worldIn, int meta) {
         super();
@@ -54,11 +54,10 @@ public class TileEntityBell extends TileEntity {
         this.meta = meta;
         wasPowered = false;
         supportIcon = null;
-        rungX = false;
+        ringDir = ForgeDirection.UNKNOWN;
     }
 
     public void ringByShot(int x, int y, int z, Entity shot, int side) {
-        ring(x, y, z);
         if (Config.bell_swing_physics) {
             Vector3d vec = VectorHelper.createEntityPosAsVector3d(shot);
             double radius = vec.distance(x + .5, y + 14/16F, z + .5);
@@ -68,6 +67,7 @@ public class TileEntityBell extends TileEntity {
             addOrRestartSwing(vec.x, vec.y, vec.z);
         } else
             swingNormal(side);
+        ring(x, y, z);
     }
 
     private double massOf(Entity shot) {
@@ -83,7 +83,6 @@ public class TileEntityBell extends TileEntity {
     }
 
     public void ringByPress(int x, int y, int z, EntityPlayer player, int side) {
-        ring(x, y, z);
         if (Config.bell_swing_physics) {
             MovingObjectPosition hit = player.worldObj.getBlock(x, y, z).collisionRayTrace(player.worldObj, x, y, z,
                 VectorHelper.entityPosAsVec3(player), player.getLookVec());
@@ -91,21 +90,22 @@ public class TileEntityBell extends TileEntity {
             double radius = vec.distance(x + .5, y + 14/16F, z + .5);
         } else
             swingNormal(side);
+        ring(x, y, z);
     }
 
     private void ringByRedstone(int x, int y, int z) {
-        ring(x, y, z);
         if (Config.bell_redstone_swings_correctly && (meta == 0 || meta == 3))
             swingNormal(2);
         else swingNormal(4);
+        ring(x, y, z);
     }
 
     private void swingNormal(int side) {
         if (side < 0 || side > 5) return;
         ForgeDirection direction = ForgeDirection.getOrientation(side);
-        direction = direction.getRotation(ForgeDirection.UP);
+        direction = direction.getRotation(ForgeDirection.DOWN);
         addOrRestartSwing(direction.offsetX, direction.offsetY, direction.offsetZ);
-        if (direction.offsetX != 0) rungX = true;
+        ringDir = direction;
     }
 
     private void addOrRestartSwing(double x, double y, double z) {
@@ -129,6 +129,7 @@ public class TileEntityBell extends TileEntity {
                     e.addPotionEffect(new PotionEffect(EtFuturumWrappium.instance.getGlowingPotionID(), 60));
             }
         }
+        markDirty();
     }
 
     public AxisAlignedBB getRingBox(int x, int y, int z) {
@@ -175,20 +176,11 @@ public class TileEntityBell extends TileEntity {
         } else {
             double rot = Math.sin(ticksRung * Math.PI / 20) * Config.bell_static_swing_mag / ticksRung,
                 swing = Math.cos(ticksRung * Math.PI / 20) * Config.bell_static_swing_mag / ticksRung;
-            if (rungX) {
-                rotation.set(rot, 0, 0);
-                rot_v.set(swing, 0, 0);
-            } else {
-                rotation.set(0, 0, rot);
-                rot_v.set(0, 0,swing);
-            }
+            rotation.set(rot * ringDir.offsetX, 0, rot * ringDir.offsetZ);
+            rot_v.set(swing * ringDir.offsetX, 0, swing * ringDir.offsetZ);
         }
     }
 
-    @Override
-    public boolean canUpdate() {
-        return true;
-    }
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
@@ -202,7 +194,7 @@ public class TileEntityBell extends TileEntity {
         compound.setInteger("ticksRung", ticksRung);
         compound.setInteger("meta", meta);
         compound.setBoolean("wasPowered", wasPowered);
-        compound.setBoolean("rungX", rungX);
+        compound.setInteger("ringDir", ringDir.ordinal());
     }
 
     @Override
@@ -218,7 +210,7 @@ public class TileEntityBell extends TileEntity {
         ticksRung = compound.getInteger("ticksRung");
         meta = compound.getInteger("meta");
         wasPowered = compound.getBoolean("wasPowered");
-        rungX = compound.getBoolean("rungX");
+        ringDir = ForgeDirection.getOrientation(compound.getInteger("ringDir"));
     }
 
     @Override

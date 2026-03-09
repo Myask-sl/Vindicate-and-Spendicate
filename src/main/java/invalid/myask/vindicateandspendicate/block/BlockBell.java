@@ -148,18 +148,20 @@ public class BlockBell extends Block implements ITileEntityProvider {
 
 
     @Override
-    public void registerBlockIcons(IIconRegister reg) {}
+    public void registerBlockIcons(IIconRegister reg) {
+        blockIcon = reg.registerIcon(VindicateAndSpendicate.MODID + ":bell_item");
+    }
 
     @Override
     public IIcon getIcon(IBlockAccess worldIn, int x, int y, int z, int side) {
         if (worldIn.getTileEntity(x, y, z) instanceof TileEntityBell bell)
             return bell.getSupportIconSafely();
-        return getIcon(side, 0);
+        return getIcon(side, -1);
     }
 
     @Override
     public IIcon getIcon(int side, int meta) {
-        if (blockIcon == null) blockIcon = Blocks.planks.getIcon(0, 5); //dark oak
+        if (meta == -1) return Blocks.planks.getIcon(0, 5); //dark oak
         return blockIcon;
     }
 
@@ -199,13 +201,13 @@ public class BlockBell extends Block implements ITileEntityProvider {
                         sideMinus = world.isSideSolid(x - 1, y, z, ForgeDirection.EAST, false);//FIXME: just stick it in meta and update on update.
                         sidePlus = world.isSideSolid(x + 1, y, z, ForgeDirection.WEST, false);
                         setBlockBounds(sideMinus ? 0 : 3/16F, 13/16F, 7/16F,
-                            sidePlus ? 1 : 15/16F, 15/16F, 9/16F);
+                            sidePlus ? 1 : 13/16F, 15/16F, 9/16F);
                         break;
                     case 3: //NS
                         sideMinus = world.isSideSolid(x, y, z - 1, ForgeDirection.SOUTH, false);
                         sidePlus = world.isSideSolid(x, y, z + 1, ForgeDirection.NORTH, false);
                         setBlockBounds(7/16F, 13/16F, sideMinus ? 0 : 3/16F,
-                            9/16F, 15/16F, sidePlus ? 1 : 15/16F);
+                            9/16F, 15/16F, sidePlus ? 1 : 13/16F);
                         break;
                     case 0: //down, z-facing
                     default:

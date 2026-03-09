@@ -36,7 +36,7 @@ public class RenderBell extends TileEntitySpecialRenderer implements ISimpleBloc
         boolean rendered = false;
         if (block instanceof BlockBell bell) {
             int meta = world.getBlockMetadata(x, y, z);
-            renderer.setOverrideBlockTexture(bell.getIcon(0, 0));
+            renderer.setOverrideBlockTexture(bell.getIcon(0, -1));
             bell.setBlockBoundsForRender(world, x, y, z, 0);
             renderer.setRenderBoundsFromBlock(bell);
             rendered = renderer.renderStandardBlock(bell, x, y, z);
