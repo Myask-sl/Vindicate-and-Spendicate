@@ -84,7 +84,7 @@ public class TileEntityBell extends TileEntity {
     }
 
     public void ringByPress(int x, int y, int z, EntityPlayer player, int side) {
-        MovingObjectPosition hit;
+        MovingObjectPosition hit = null;
         Vec3 lookVec = player.getLookVec();
         if (Config.bell_swing_physics) {
             hit = player.worldObj.getBlock(x, y, z).collisionRayTrace(player.worldObj, x, y, z,
@@ -114,7 +114,7 @@ public class TileEntityBell extends TileEntity {
         if (side < 0 || side > 5) return;
         ForgeDirection direction = ForgeDirection.getOrientation(side);
         direction = direction.getRotation(ForgeDirection.DOWN);
-        addOrRestartSwing(direction.offsetX, direction.offsetY, direction.offsetZ);
+        addOrRestartSwing(direction.offsetX * Config.bell_dynamic_swing_mag, direction.offsetY * Config.bell_dynamic_swing_mag, direction.offsetZ * Config.bell_dynamic_swing_mag);
         ringDir = direction;
     }
 
@@ -202,6 +202,8 @@ public class TileEntityBell extends TileEntity {
         compound.setDouble("rot_v_y", rot_v.y);
         compound.setDouble("rot_v_z", rot_v.z);
         compound.setInteger("ticksRung", ticksRung);
+        int check = worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
+        if (meta != check) meta = check;
         compound.setInteger("meta", meta);
         compound.setBoolean("wasPowered", wasPowered);
         compound.setInteger("ringDir", ringDir.ordinal());

@@ -70,6 +70,7 @@ public class Config {
     public static boolean bell_swing_physics = true;
     public static boolean bells_reset_rotation = false; //only maters if physics on
     public static double bell_static_swing_mag = 1;
+    public static double bell_dynamic_swing_mag = 0.5;
 
     public static void synchronizeConfiguration(File configFile) {
         Configuration configuration = new Configuration(configFile);

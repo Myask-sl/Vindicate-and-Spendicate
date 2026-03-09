@@ -133,15 +133,19 @@ public class BlockBell extends Block implements ITileEntityProvider {
     public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collider) {
         int meta = world.getBlockMetadata(x, y, z);
         switch (meta) {
-            case 0 -> list.add(AxisAlignedBB.getBoundingBox(0, 0, 4/16F, 1, 1, 12/16F));
-            case 4 -> list.add(AxisAlignedBB.getBoundingBox(4/16F, 0, 0, 12/16F, 1, 1));
+            case 0 -> provisionalAABBAdd(AxisAlignedBB.getBoundingBox(0, 0, 4/16F, 1, 1, 12/16F), mask, list);
+            case 4 -> provisionalAABBAdd(AxisAlignedBB.getBoundingBox(4/16F, 0, 0, 12/16F, 1, 1), mask, list);
             case 2, 3 -> {
-                list.add(AxisAlignedBB.getBoundingBox(4/16F, 4/16F, 4/16F, 12/16F, 6/16F, 12/16F));
-                list.add(AxisAlignedBB.getBoundingBox(5/16F, 6/16F, 5/16F, 11/16F, 13/16F, 11/16F));
+                provisionalAABBAdd(AxisAlignedBB.getBoundingBox(4/16F, 4/16F, 4/16F, 12/16F, 6/16F, 12/16F), mask, list);
+                provisionalAABBAdd(AxisAlignedBB.getBoundingBox(5/16F, 6/16F, 5/16F, 11/16F, 13/16F, 11/16F), mask, list);
             }
             //case 1
-            default -> setBlockBounds(4/16F, 4/16F, 4/16F, 12/16F, 13/16F, 12/16F);
+            default -> provisionalAABBAdd(AxisAlignedBB.getBoundingBox(4/16F, 4/16F, 4/16F, 12/16F, 13/16F, 12/16F), mask, list);
         }
+    }
+
+    public void provisionalAABBAdd(AxisAlignedBB prospect, AxisAlignedBB mask, List<AxisAlignedBB> list) {
+        if (prospect.intersectsWith(mask)) list.add(prospect);
     }
 
     //Clientside
