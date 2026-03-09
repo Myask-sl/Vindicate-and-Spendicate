@@ -95,9 +95,10 @@ public class TileEntityBell extends TileEntity {
 
     private void ringByRedstone(int x, int y, int z) {
         if (Config.bell_redstone_swings_correctly && (meta == 0 || meta == 3))
-            swingNormal(2);
-        else swingNormal(4);
+            swingNormal(4);
+        else swingNormal(2);
         ring(x, y, z);
+        worldObj.markBlockForUpdate(x, y, z);
     }
 
     private void swingNormal(int side) {
@@ -174,8 +175,8 @@ public class TileEntityBell extends TileEntity {
                 //normally g is .08/tick in MC
             }
         } else {
-            double rot = Math.sin(ticksRung * Math.PI / 20) * Config.bell_static_swing_mag / ticksRung,
-                swing = Math.cos(ticksRung * Math.PI / 20) * Config.bell_static_swing_mag / ticksRung;
+            double rot = Math.sin(ticksRung * Math.PI / 20) * Config.bell_static_swing_mag * Math.pow(.96, ticksRung),
+                swing = Math.cos(ticksRung * Math.PI / 20) * Config.bell_static_swing_mag * Math.pow(.96, ticksRung + 1);
             rotation.set(rot * ringDir.offsetX, 0, rot * ringDir.offsetZ);
             rot_v.set(swing * ringDir.offsetX, 0, swing * ringDir.offsetZ);
         }
