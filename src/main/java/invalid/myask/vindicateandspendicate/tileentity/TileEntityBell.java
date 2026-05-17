@@ -180,7 +180,7 @@ public class TileEntityBell extends TileEntity {
             } else {
                 rotation.add(rot_v);
                 rot_v.mul(0.9);
-                rot_v.add(-Math.sin(rotation.x) * .08, 0, -Math.sin(rotation.z) * .08);
+                rot_v.add(-Math.sin(rotation.x) * .08, rotation.y * -.01, -Math.sin(rotation.z) * .08);
                 //normally g is .08/tick in MC
             }
         } else {

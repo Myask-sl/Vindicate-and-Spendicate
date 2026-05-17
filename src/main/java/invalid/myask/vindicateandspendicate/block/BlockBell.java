@@ -145,7 +145,7 @@ public class BlockBell extends Block implements ITileEntityProvider {
     }
 
     public void provisionalAABBAdd(AxisAlignedBB prospect, AxisAlignedBB mask, List<AxisAlignedBB> list) {
-        if (prospect.intersectsWith(mask)) list.add(prospect);
+        if (mask.intersectsWith(prospect)) list.add(prospect);
     }
 
     //Clientside
