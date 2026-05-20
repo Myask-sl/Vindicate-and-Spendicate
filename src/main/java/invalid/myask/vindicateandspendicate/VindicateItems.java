@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
+import invalid.myask.vindicateandspendicate.item.ItemAxeCombat;
 import invalid.myask.vindicateandspendicate.item.ItemXBow;
 import invalid.myask.vindicateandspendicate.item.VindicUCItem;
 import invalid.myask.vindicateandspendicate.util.FireworksBuilder;
@@ -25,6 +26,8 @@ public class VindicateItems {
 
     public static final Item TOTEM_DYING = new VindicUCItem().setNames("totem_dying");
     public static final Item OMEN_BOTTLE = new VindicUCItem().setNames("ominous_bottle");
+
+    public static final Item IRON_COMBAT_AXE = new ItemAxeCombat(Item.ToolMaterial.IRON).setNames("axe_iron_combat");
 
 
     public static void register() {
@@ -115,6 +118,7 @@ public class VindicateItems {
         registerAnItem(XBOW, CreativeTabs.tabCombat);
         registerAnItem(TOTEM_DYING, CreativeTabs.tabMisc);
         registerAnItem(OMEN_BOTTLE, CreativeTabs.tabMisc);
+        registerAnItem(IRON_COMBAT_AXE, CreativeTabs.tabCombat);
     }
 
     static void registerAnItem(Item item, CreativeTabs vanillaTab) {

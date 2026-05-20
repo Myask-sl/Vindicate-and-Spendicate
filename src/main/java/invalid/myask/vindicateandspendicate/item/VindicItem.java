@@ -3,10 +3,11 @@ package invalid.myask.vindicateandspendicate.item;
 import invalid.myask.vindicateandspendicate.VindicateAndSpendicate;
 import net.minecraft.item.Item;
 
-public class VindicItem extends Item {
-    public Item setNames(String namebase) {
-        setUnlocalizedName(namebase);
-        setTextureName(VindicateAndSpendicate.MODID + ":" + namebase);
-        return this;
+public interface VindicItem {
+    default Item setNames(String namebase) {
+        return setUnlocalizedName(namebase).setTextureName(VindicateAndSpendicate.MODID + ":" + namebase);
     }
+
+    Item setTextureName(String s);
+    Item setUnlocalizedName(String name);
 }

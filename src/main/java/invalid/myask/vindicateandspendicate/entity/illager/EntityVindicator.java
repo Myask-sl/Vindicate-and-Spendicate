@@ -1,11 +1,11 @@
 package invalid.myask.vindicateandspendicate.entity.illager;
 
 import invalid.myask.vindicateandspendicate.Config;
+import invalid.myask.vindicateandspendicate.VindicateItems;
 import invalid.myask.vindicateandspendicate.compat.EtFuturumWrappium;
 import invalid.myask.vindicateandspendicate.compat.HogTagWrap;
 import invalid.myask.vindicateandspendicate.entity.ai.EntityAIGoCrazy;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -31,7 +31,10 @@ public class EntityVindicator extends EntityPillager {
 
     @Override
     protected void setRandomWeapon() {
-        setCurrentItemOrArmor(0, new ItemStack(Items.iron_axe));
+        if (rand.nextInt(3) == 0)
+            setCurrentItemOrArmor(0, new ItemStack(VindicateItems.IRON_COMBAT_AXE));
+        else
+            setCurrentItemOrArmor(0, new ItemStack(Items.iron_axe));
     }
 
     @Override
