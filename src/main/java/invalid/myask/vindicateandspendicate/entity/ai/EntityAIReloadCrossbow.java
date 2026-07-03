@@ -3,6 +3,7 @@ package invalid.myask.vindicateandspendicate.entity.ai;
 import invalid.myask.vindicateandspendicate.Config;
 import invalid.myask.vindicateandspendicate.api.CrossbowHelper;
 import invalid.myask.vindicateandspendicate.api.IWeaponReloader;
+import invalid.myask.vindicateandspendicate.entity.illager.EntityPillager;
 import invalid.myask.vindicateandspendicate.item.ItemXBow;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -12,7 +13,7 @@ public class EntityAIReloadCrossbow extends EntityAIBase {
     EntityLiving I;
     long endTime, pullTime;
     ItemStack munition;
-    boolean loader = true;
+    boolean loader = false;
     public EntityAIReloadCrossbow(EntityLiving entityPillager, ItemStack ammo) {
         super();
         I = entityPillager;
@@ -33,8 +34,10 @@ public class EntityAIReloadCrossbow extends EntityAIBase {
         ItemStack held = I.getHeldItem();
         pullTime = ((ItemXBow)held.getItem()).pullTime(held);
         endTime = I.worldObj.getTotalWorldTime() + pullTime;
-        if (loader)
-            ((IWeaponReloader)I).setLoadProgress(0);
+        if (loader) {
+            ((IWeaponReloader) I).setLoadProgress(0);
+            ((IWeaponReloader) I).setLoadLength(pullTime);
+        }
         I.playSound("illager.xbow.charge", 1, .9F + .2F * I.getRNG().nextFloat());
     }
 
@@ -46,8 +49,9 @@ public class EntityAIReloadCrossbow extends EntityAIBase {
             ItemStack held = I.getHeldItem();
             ((ItemXBow) held.getItem()).loadWith(held, munition.copy());
             I.playSound("illager.xbow.charge.done", 1, .9F + .2F * I.getRNG().nextFloat());
-            if (loader)
-                ((IWeaponReloader)I).setLoadProgress(0);
+            if (loader) {
+                ((IWeaponReloader) I).setLoadProgress(EntityPillager.Action.AIM);
+            }
         } else if (pullTime != 0 && loader)
             ((IWeaponReloader)I).setLoadProgress((int) (100 * (endTime - now) / pullTime));
     }

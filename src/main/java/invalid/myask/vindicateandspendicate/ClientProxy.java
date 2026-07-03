@@ -9,7 +9,10 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 
 import invalid.myask.vindicateandspendicate.api.CrossbowHelper;
+import invalid.myask.vindicateandspendicate.client.entity.RenderIllager;
 import invalid.myask.vindicateandspendicate.client.tileentity.RenderBell;
+import invalid.myask.vindicateandspendicate.entity.illager.EntityPillager;
+import invalid.myask.vindicateandspendicate.entity.illager.EntityVindicator;
 import invalid.myask.vindicateandspendicate.item.ItemXBow;
 import invalid.myask.vindicateandspendicate.tileentity.TileEntityBell;
 
@@ -35,5 +38,10 @@ public class ClientProxy extends CommonProxy {
         super.preInit(event);
         RenderingRegistry.registerBlockHandler(RenderBell.instance);
         ClientRegistry.registerTileEntity(TileEntityBell.class, "village_bell", RenderBell.instance);
+
+        RenderingRegistry.registerEntityRenderingHandler(EntityPillager.class, RenderIllager.instance);
+        RenderingRegistry.registerEntityRenderingHandler(EntityVindicator.class, RenderIllager.instance);
+        //RenderingRegistry.registerEntityRenderingHandler(EntityWanderingTrader.class, RenderIllager.instance);
+        //RenderingRegistry.registerEntityRenderingHandler(EntityWanderingTrillager.class, RenderIllager.instance);
     }
 }

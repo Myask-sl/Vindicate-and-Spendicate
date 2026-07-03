@@ -49,6 +49,7 @@ public class EntityPillager extends EntityMob implements IEntityOwnable, IRanged
     protected String ownerUUID;
     protected boolean breaksDoors, crossbowWielding = true, amCaptain = false, onRaid = false;
     protected int loadProgress;
+    protected long loadLength;
 
     public EntityPillager(World world) {
         this(world, false);
@@ -79,6 +80,7 @@ public class EntityPillager extends EntityMob implements IEntityOwnable, IRanged
         if (world != null && !world.isRemote)
             setCombatStrategy();
         loadProgress = -1;
+        loadLength = Config.crossbow_base_charge_ticks;
     }
 
     private void setCombatStrategy() {
@@ -132,6 +134,7 @@ public class EntityPillager extends EntityMob implements IEntityOwnable, IRanged
         CrossbowHelper.launchProjectile(getHeldItem(), worldObj, this, pincushion); //applies enchants and everything
         if (getHeldItem().attemptDamageItem(1, rand))
             setCurrentItemOrArmor(0, null);
+        setLoadProgress(-1);
     }
 
     @Override
@@ -171,6 +174,15 @@ public class EntityPillager extends EntityMob implements IEntityOwnable, IRanged
     }
     public int getLoading() {
         return loadProgress;
+    }
+
+    @Override
+    public void setLoadLength(long l) {
+        loadLength = l;
+    }
+
+    public long getLoadLength() {
+        return loadLength;
     }
 
     @Override
@@ -249,6 +261,27 @@ public class EntityPillager extends EntityMob implements IEntityOwnable, IRanged
 
     public boolean isOnRaid() {
         return onRaid;
+    }
+
+    public int getHandsAction() {
+        if (crossbowWielding) {
+            return getLoading();
+        } else if (getHeldItem() != null) {
+            if (!isOnRaid() && getAttackTarget() != null)
+                return Action.HOLD;
+            else return Action.BRANDISH;
+        }
+        return Action.FOLD;
+    }
+
+    public static class Action {
+        public static final int HOLD = -1;
+        public static final int BRANDISH = -2;
+        public static final int FOLD = -5;
+
+        //crossbow actions
+        //-1 is unloaded. 0-N is loading.
+        public static final int AIM = -3;
     }
 
     //TODO several more functions
